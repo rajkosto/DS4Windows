@@ -42,7 +42,13 @@ namespace DS4Windows
 
     public enum DsBattery : byte
     {
-        Charging = 0x80,
+        None = 0x00,
+        Dying = 0x01,
+        Low = 0x02,
+        Medium = 0x03,
+        High = 0x04,
+        Full = 0x05,
+        Charging = 0xEE,
         Charged = 0xEF
     };
 
@@ -53,7 +59,7 @@ namespace DS4Windows
         public DsConnection ConnectionType;
         public DsModel Model;
         public PhysicalAddress PadMacAddress;
-        public byte BatteryStatus;
+        public DsBattery BatteryStatus;
         public bool IsActive;
     }
 

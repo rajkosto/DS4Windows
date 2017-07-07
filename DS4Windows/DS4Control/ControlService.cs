@@ -85,20 +85,22 @@ namespace DS4Windows
             meta.ConnectionType = (d.getConnectionType() == ConnectionType.USB) ? DsConnection.Usb : DsConnection.Bluetooth;
             meta.IsActive = !d.isDS4Idle();
             
-            if (d.isCharging())
-            {
-                if (d.getBattery() >= 100)
-                {
-                    meta.BatteryStatus = (byte)DsBattery.Charged;
-                }
-                else
-                {
-                    meta.BatteryStatus = (byte)((byte)DsBattery.Charging | d.getBattery());
-                }
-            }
+            if (d.isCharging() && d.getBattery() >= 100)
+                meta.BatteryStatus = DsBattery.Charged;
             else
             {
-                meta.BatteryStatus = (byte)d.getBattery();
+                if (d.getBattery() >= 95)
+                    meta.BatteryStatus = DsBattery.Full;
+                else if (d.getBattery() >= 70)
+                    meta.BatteryStatus = DsBattery.High;
+                else if (d.getBattery() >= 50)
+                    meta.BatteryStatus = DsBattery.Medium;
+                else if (d.getBattery() >= 20)
+                    meta.BatteryStatus = DsBattery.Low;
+                else if (d.getBattery() >= 5)
+                    meta.BatteryStatus = DsBattery.Dying;
+                else
+                    meta.BatteryStatus = DsBattery.None;
             }
 
             return meta;
