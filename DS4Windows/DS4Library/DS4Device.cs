@@ -856,12 +856,15 @@ namespace DS4Windows
                     {
                         Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "" +
                                             "> invalid CRC32 in BT input report: 0x" + recvCrc32.ToString("X8") + " expected: 0x" + calcCrc32.ToString("X8"));
+
+                        cState.PacketCounter = pState.PacketCounter + 1; //still increase so we know there were lost packets
                         continue;
                     }
                 }
 
                 utcNow = DateTime.UtcNow; // timestamp with UTC in case system time zone changes
                 resetHapticState();
+                cState.PacketCounter = pState.PacketCounter + 1;
                 cState.ReportTimeStamp = utcNow;
                 cState.LX = inputReport[1];
                 cState.LY = inputReport[2];
@@ -897,6 +900,8 @@ namespace DS4Windows
                 cState.L3 = (inputReport[6] & (1 << 6)) != 0;
                 cState.Options = (inputReport[6] & (1 << 5)) != 0;
                 cState.Share = (inputReport[6] & (1 << 4)) != 0;
+                cState.R2Btn = (inputReport[6] & (1 << 3)) != 0;
+                cState.L2Btn = (inputReport[6] & (1 << 2)) != 0;
                 cState.R1 = (inputReport[6] & (1 << 1)) != 0;
                 cState.L1 = (inputReport[6] & (1 << 0)) != 0;
 
@@ -919,6 +924,17 @@ namespace DS4Windows
                     }
                 }
                 catch { currerror = "Index out of bounds: battery"; }
+
+                //Simpler touch storing
+                cState.TrackPadTouch0.Id =       (byte)(inputReport[35] & 0x7f);
+                cState.TrackPadTouch0.IsActive = (inputReport[35] & 0x80) == 0;
+                cState.TrackPadTouch0.X = (short)(((ushort)(inputReport[37] & 0x0f) << 8) | (ushort)(inputReport[36]));
+                cState.TrackPadTouch0.Y = (short)(((ushort)(inputReport[38]) << 4) | ((ushort)(inputReport[37] & 0xf0) >> 4));
+
+                cState.TrackPadTouch1.Id =       (byte)(inputReport[39] & 0x7f);
+                cState.TrackPadTouch1.IsActive = (inputReport[39] & 0x80) == 0;
+                cState.TrackPadTouch1.X = (short)(((ushort)(inputReport[41] & 0x0f) << 8) | (ushort)(inputReport[40]));
+                cState.TrackPadTouch1.Y = (short)(((ushort)(inputReport[42]) << 4) | ((ushort)(inputReport[41] & 0xf0) >> 4));
 
                 // XXX DS4State mapping needs fixup, turn touches into an array[4] of structs.  And include the touchpad details there instead.
                 try
@@ -1306,7 +1322,7 @@ namespace DS4Windows
             pState.CopyTo(state);
         }
 
-        private bool isDS4Idle()
+        public bool isDS4Idle()
         {
             if (cState.Square || cState.Cross || cState.Circle || cState.Triangle)
                 return false;
@@ -1419,11 +1435,17 @@ namespace DS4Windows
 
         public bool isValidSerial()
         {
+            if (Mac == null)
+                return false;
+
             return !Mac.Equals(blankSerial);
         }
 
         public static bool isValidSerial(string test)
         {
+            if (test == null)
+                return false;
+
             return !test.Equals(blankSerial);
         }
     }
