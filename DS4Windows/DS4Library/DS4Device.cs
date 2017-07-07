@@ -130,6 +130,8 @@ namespace DS4Windows
         private DS4State cState = new DS4State();
         private DS4State pState = new DS4State();
         private ConnectionType conType;
+        private byte[] accel = new byte[6];
+        private byte[] gyro = new byte[6];
         private byte[] inputReport;
         //private byte[] inputReport2;
         private byte[] btInputReport = null;
@@ -842,6 +844,7 @@ namespace DS4Windows
                     if (btInputReport[0] != 0x11)   //Received incorrect report, skip it
                         continue;
 
+#if VERIFY_BT_INPUT_REPORT_CRC32
                     var BT_INPUT_REPORT_CRC32_POS = BT_OUTPUT_REPORT_LENGTH - 4; //last 4 bytes of the 78-sized input report are crc32
                     UInt32 recvCrc32 = BitConverter.ToUInt32(btInputReport, BT_INPUT_REPORT_CRC32_POS);
 
@@ -858,6 +861,7 @@ namespace DS4Windows
                                             "> invalid CRC32 in BT input report: 0x" + recvCrc32.ToString("X8") + " expected: 0x" + calcCrc32.ToString("X8"));
                         continue;
                     }
+#endif
                 }
 
                 utcNow = DateTime.UtcNow; // timestamp with UTC in case system time zone changes
@@ -944,6 +948,8 @@ namespace DS4Windows
                 catch { currerror = "Index out of bounds: touchpad"; }
 
                 // Store Gyro and Accel values
+                Array.Copy(inputReport, 13, gyro, 0, 6);
+                Array.Copy(inputReport, 19, accel, 0, 6);
                 sixAxis.handleSixaxis(inputReport, cState.ReportTimeStamp, MacAddress);
                 cState.Motion = sixAxis.Values;
 
@@ -1293,7 +1299,8 @@ namespace DS4Windows
         public void getExposedState(DS4StateExposed expState, DS4State state)
         {
             cState.CopyTo(state);
-            //no additional state in exposed anymore
+            expState.setAccel(accel);
+            expState.setGyro(gyro);
         }
 
         public void getCurrentState(DS4State state)
