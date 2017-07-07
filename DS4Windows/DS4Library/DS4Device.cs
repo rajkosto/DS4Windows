@@ -130,8 +130,6 @@ namespace DS4Windows
         private DS4State cState = new DS4State();
         private DS4State pState = new DS4State();
         private ConnectionType conType;
-        private byte[] accel = new byte[6];
-        private byte[] gyro = new byte[6];
         private byte[] inputReport;
         //private byte[] inputReport2;
         private byte[] btInputReport = null;
@@ -471,7 +469,83 @@ namespace DS4Windows
                     hDevice.OpenFileStream(inputReport.Length);
                 }
 
-                //Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "> start");
+                Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "> start");
+
+                //Get the calibration bytes from controller
+                byte[] calibData = null;
+                if (ConnectionType == ConnectionType.BT || ConnectionType == ConnectionType.SONYWA)
+                {
+                    var DS4_FEATURE_REPORT_5_LENGTH = 41; //we want this instead of 0x02 because it has CRC32
+                    var NUM_BT_FEATURE_REPORT_5_TRIES = 5;
+
+                    byte[] feature5Bytes = new byte[DS4_FEATURE_REPORT_5_LENGTH];
+
+                    var BT_FEATURE_REPORT_5_CRC32_POS = DS4_FEATURE_REPORT_5_LENGTH - 4; //last 4 bytes are rcr32
+                    byte[] crcBuf = new byte[1 + BT_FEATURE_REPORT_5_CRC32_POS]; //0xA3 + the whole input report before the crc32
+
+                    int numTries;
+                    for (numTries = 0; numTries < NUM_BT_FEATURE_REPORT_5_TRIES; numTries++)
+                    {
+                        feature5Bytes[0] = 0x05;
+                        if (HidDevice.readFeatureData(feature5Bytes) == false)
+                            break;
+
+                        UInt32 recvCrc32 = BitConverter.ToUInt32(feature5Bytes, BT_FEATURE_REPORT_5_CRC32_POS);
+                        crcBuf[0] = 0xA3;
+                        Array.Copy(feature5Bytes, 0, crcBuf, 1, BT_FEATURE_REPORT_5_CRC32_POS);
+
+                        UInt32 calcCrc32 = Crc32.Compute(crcBuf);
+                        if (recvCrc32 != calcCrc32)
+                        {
+                            Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "" +
+                                                "> invalid CRC32 getting calibration data (retries: " + numTries.ToString() +
+                                                "): 0x" + recvCrc32.ToString("X8") + " expected: 0x" + calcCrc32.ToString("X8"));
+                            continue;
+                        }
+                        else
+                        {
+                            crcBuf = null;
+                            calibData = new byte[BT_FEATURE_REPORT_5_CRC32_POS];
+                            Array.Copy(feature5Bytes, calibData, calibData.Length);
+                            break;
+                        }
+                    }
+                    crcBuf = null;
+
+                    if (calibData != null)
+                    {
+                        Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "" +
+                                        "> Got calibration data over BT (tries: " + numTries.ToString() +
+                                        "): " + BitConverter.ToString(calibData).Replace('-', ' '));
+                    }
+                    else
+                    {
+                        Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "" +
+                                        "> Cannot get calibration data over BT (tried " + numTries.ToString() + " times)");
+                    }
+                }
+                else if (ConnectionType == ConnectionType.USB)
+                {
+                    var DS4_FEATURE_REPORT_2_LENGTH = 37;
+                    calibData = new byte[DS4_FEATURE_REPORT_2_LENGTH];
+                    calibData[0] = 0x02;
+
+                    if (HidDevice.readFeatureData(calibData) == false)
+                    {
+                        Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "" +
+                                        "> Error getting calibration data over USB");
+                        calibData = null;
+                    }
+                    else
+                    {
+                        Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "" +
+                                        "> Got calibration data over USB:" + BitConverter.ToString(calibData).Replace('-', ' '));
+                    }
+                }
+
+                sixAxis.setCalibrationData(calibData);
+                calibData = null;
+
                 sendOutputReport(true); // initialize the output report
 
                 if (conType == ConnectionType.BT)
@@ -776,6 +850,7 @@ namespace DS4Windows
                     Array.Copy(btInputReport, 0, crcBuf, 1, BT_INPUT_REPORT_CRC32_POS);
 
                     UInt32 calcCrc32 = Crc32.Compute(crcBuf);
+                    crcBuf = null;
 
                     if (recvCrc32 != calcCrc32)
                     {
@@ -869,9 +944,8 @@ namespace DS4Windows
                 catch { currerror = "Index out of bounds: touchpad"; }
 
                 // Store Gyro and Accel values
-                Array.Copy(inputReport, 13, gyro, 0, 6);
-                Array.Copy(inputReport, 19, accel, 0, 6);
-                sixAxis.handleSixaxis(gyro, accel, cState);
+                sixAxis.handleSixaxis(inputReport, cState.ReportTimeStamp, MacAddress);
+                cState.Motion = sixAxis.Values;
 
                 /* Debug output of incoming HID data:
                 if (cState.L2 == 0xff && cState.R2 == 0xff)
@@ -1219,8 +1293,7 @@ namespace DS4Windows
         public void getExposedState(DS4StateExposed expState, DS4State state)
         {
             cState.CopyTo(state);
-            expState.setAccel(accel);
-            expState.setGyro(gyro);
+            //no additional state in exposed anymore
         }
 
         public void getCurrentState(DS4State state)

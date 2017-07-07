@@ -14,6 +14,7 @@ namespace DS4Windows
         public byte FrameCounter; // 0, 1, 2...62, 63, 0....
         public byte TouchPacketCounter; // we break these out automatically
         public byte Battery; // 0 for charging, 10/20/30/40/50/60/70/80/90/100 for percentage of full
+        public SixAxis Motion;
         public double LSAngle; // Calculated bearing of the LS X,Y coordinates
         public double RSAngle; // Calculated bearing of the RS X,Y coordinates
         public double LSAngleRad; // Calculated bearing of the LS X,Y coordinates (in radians)
@@ -36,6 +37,7 @@ namespace DS4Windows
             FrameCounter = 255; // only actually has 6 bits, so this is a null indicator
             TouchPacketCounter = 255; // 8 bits, no great junk value
             Battery = 0;
+            Motion = new SixAxis(0, 0, 0, 0, 0, 0, 0);
             LSAngle = 0.0;
             LSAngleRad = 0.0;
             RSAngle = 0.0;
@@ -82,6 +84,7 @@ namespace DS4Windows
             RY = state.RY;
             FrameCounter = state.FrameCounter;
             Battery = state.Battery;
+            Motion = state.Motion;
             LSAngle = state.LSAngle;
             LSAngleRad = state.LSAngleRad;
             RSAngle = state.RSAngle;
@@ -133,6 +136,7 @@ namespace DS4Windows
             state.RY = RY;
             state.FrameCounter = FrameCounter;
             state.Battery = Battery;
+            state.Motion = Motion;
             state.LSAngle = LSAngle;
             state.LSAngleRad = LSAngleRad;
             state.RSAngle = RSAngle;

@@ -130,6 +130,7 @@
     </Compile>
     <Compile Include="DS4Library\Crc32.cs" />
     <Compile Include="DS4Library\DS4Audio.cs" />
+    <Compile Include="DS4Library\DS4Cal.cs" />
     <Compile Include="DS4Library\DS4Device.cs" />
     <Compile Include="DS4Library\DS4Devices.cs" />
     <Compile Include="DS4Library\DS4Sixaxis.cs" />

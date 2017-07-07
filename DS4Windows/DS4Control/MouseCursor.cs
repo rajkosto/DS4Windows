@@ -35,10 +35,15 @@ namespace DS4Windows
 
         public virtual void sixaxisMoved(SixAxisEventArgs arg)
         {
-            int deltaX = 0, deltaY = 0;
-            deltaX = -arg.sixAxis.gyroXFull;
-            deltaY = -arg.sixAxis.gyroYFull;
-            //Console.WriteLine(arg.sixAxis.deltaX);
+            double deltaX = 0, deltaY = 0;
+            if (arg.sixAxis.previous != null) //need it for gyro delta time
+            {
+                ulong timestampDeltaUs = arg.sixAxis.timestampUs - arg.sixAxis.previous.timestampUs;
+                double timestampDelta = (double)(timestampDeltaUs) * 0.000001;
+
+                deltaX = arg.sixAxis.gyroRoll * timestampDelta; //according to sony convention, Roll is positive "to the right"
+                deltaY = arg.sixAxis.gyroPitch * timestampDelta; //according to sony convention, Pitch is positive "towards you" (down)
+            }
 
             gyroSmooth = Global.getGyroSmoothing(deviceNumber);
             double gyroSmoothWeight = 0.0;
