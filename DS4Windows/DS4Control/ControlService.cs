@@ -275,14 +275,17 @@ namespace DS4Windows
                 {
                     var UDP_SERVER_PORT = 26760;
 
-                    try { _udpServer.Start(UDP_SERVER_PORT); }
+                    try
+                    {
+                        _udpServer.Start(UDP_SERVER_PORT);
+                        LogDebug("UDP server listening on port " + UDP_SERVER_PORT);
+                    }
                     catch (System.Net.Sockets.SocketException ex)
                     {
-                        var errMsg = String.Format("Couldn't start UDP server at port {0}, outside applications won't be able to access pad data." + 
-                            " NativeError: 0x{1} SocketError: {2}", UDP_SERVER_PORT, ex.NativeErrorCode.ToString("X8"), ex.SocketErrorCode);
+                        var errMsg = String.Format("Couldn't start UDP server on port {0}, outside applications won't be able to access pad data ({1})", UDP_SERVER_PORT, ex.SocketErrorCode);
 
-                        LogDebug(errMsg);
-                        Log.LogToTray(errMsg);
+                        LogDebug(errMsg, true);
+                        Log.LogToTray(errMsg, true, true);
                     }
                 }
             }
