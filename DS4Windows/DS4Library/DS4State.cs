@@ -17,6 +17,7 @@ namespace DS4Windows
         public byte FrameCounter; // 0, 1, 2...62, 63, 0....
         public byte TouchPacketCounter; // we break these out automatically
         public byte Battery; // 0 for charging, 10/20/30/40/50/60/70/80/90/100 for percentage of full
+        public SixAxis Motion; //sensors
 
         public DS4State()
         {
@@ -29,6 +30,7 @@ namespace DS4Windows
             FrameCounter = 255; // only actually has 6 bits, so this is a null indicator
             TouchPacketCounter = 255; // 8 bits, no great junk value
             Battery = 0;
+            Motion = new SixAxis(0,0,0,0,0,0,0);
         }
 
         public DS4State(DS4State state)
@@ -65,6 +67,7 @@ namespace DS4Windows
             RY = state.RY;
             FrameCounter = state.FrameCounter;
             Battery = state.Battery;
+            Motion = state.Motion;
         }
 
         public DS4State Clone()
@@ -106,6 +109,7 @@ namespace DS4Windows
             state.RY = RY;
             state.FrameCounter = FrameCounter;
             state.Battery = Battery;
+            state.Motion = Motion;
         }
 
     }

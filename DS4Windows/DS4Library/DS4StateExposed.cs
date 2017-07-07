@@ -8,8 +8,6 @@ namespace DS4Windows
     public class DS4StateExposed
     {
         private DS4State _state;
-        private byte[] accel = new byte[] { 0, 0, 0, 0, 0, 0 },
-            gyro = new byte[] { 0, 0, 0, 0, 0, 0 };
 
         public DS4StateExposed()
         {
@@ -20,54 +18,38 @@ namespace DS4Windows
             _state = state;
         }
 
-        bool Square { get { return _state.Square; } }  
-        bool Triangle { get { return _state.Triangle; } }  
-        bool Circle { get { return _state.Circle; } }  
-        bool Cross { get { return _state.Cross; } } 
-        bool DpadUp { get { return _state.DpadUp; } }  
-        bool DpadDown { get { return _state.DpadDown; } }  
-        bool DpadLeft { get { return _state.DpadLeft; } }  
-        bool DpadRight { get { return _state.DpadRight; } } 
-        bool L1 { get { return _state.L1; } }  
-        bool L3 { get { return _state.L3; } }  
-        bool R1 { get { return _state.R1; } }  
-        bool R3 { get { return _state.R3; } } 
-        bool Share { get { return _state.Share; } }  
-        bool Options { get { return _state.Options; } }  
-        bool PS { get { return _state.PS; } }  
-        bool Touch1 { get { return _state.Touch1; } }  
-        bool Touch2 { get { return _state.Touch2; } }  
-        bool TouchButton { get { return _state.TouchButton; } } 
-        byte LX { get { return _state.LX; } }  
-        byte RX { get { return _state.RX; } }  
-        byte LY { get { return _state.LY; } }  
-        byte RY { get { return _state.RY; } }  
-        byte L2 { get { return _state.L2; } }  
-        byte R2 { get { return _state.R2; } } 
-        int Battery { get { return _state.Battery; } }
+        public bool Square { get { return _state.Square; } }
+        public bool Triangle { get { return _state.Triangle; } }
+        public bool Circle { get { return _state.Circle; } }
+        public bool Cross { get { return _state.Cross; } }
+        public bool DpadUp { get { return _state.DpadUp; } }
+        public bool DpadDown { get { return _state.DpadDown; } }
+        public bool DpadLeft { get { return _state.DpadLeft; } }
+        public bool DpadRight { get { return _state.DpadRight; } }
+        public bool L1 { get { return _state.L1; } }
+        public bool L3 { get { return _state.L3; } }
+        public bool R1 { get { return _state.R1; } }
+        public bool R3 { get { return _state.R3; } }
+        public bool Share { get { return _state.Share; } }
+        public bool Options { get { return _state.Options; } }
+        public bool PS { get { return _state.PS; } }
+        public bool Touch1 { get { return _state.Touch1; } }
+        public bool Touch2 { get { return _state.Touch2; } }
+        public bool TouchButton { get { return _state.TouchButton; } }
+        public byte LX { get { return _state.LX; } }
+        public byte RX { get { return _state.RX; } }
+        public byte LY { get { return _state.LY; } }
+        public byte RY { get { return _state.RY; } }
+        public byte L2 { get { return _state.L2; } }
+        public byte R2 { get { return _state.R2; } }
+        public int Battery { get { return _state.Battery; } }
+        public SixAxis Motion { get { return _state.Motion; } }
+        public int AccelX { get { return (Motion == null) ? 0 : (int)(Motion.accelX * 8192); } }
+        public int AccelY { get { return (Motion == null) ? 0 : (int)(Motion.accelY * 8192); } }
+        public int AccelZ { get { return (Motion == null) ? 0 : (int)(Motion.accelZ * 8192); } }
 
-        /// <summary> Holds raw DS4 input data from 14 to 19 </summary>
-        public byte[] Accel { set { accel = value; } }
-        /// <summary> Holds raw DS4 input data from 20 to 25 </summary>
-        public byte[] Gyro { set { gyro = value; } }
-
-        /// <summary> Yaw leftward/counter-clockwise/turn to port or larboard side </summary>
-        /// <remarks> Add double the previous result to this delta and divide by three.</remarks>
-        public int AccelX { get { return (short)((ushort)(accel[2] << 8) | accel[3]) / 256; } }
-        /// <summary> Pitch upward/backward </summary>
-        /// <remarks> Add double the previous result to this delta and divide by three.</remarks>
-        public int AccelY { get { return (short)((ushort)(accel[0] << 8) | accel[1] ) / 256; } }
-        /// <summary> roll left/L side of controller down/starboard raising up </summary>
-        /// <remarks> Add double the previous result to this delta and divide by three.</remarks>
-        public int AccelZ { get { return (short)((ushort)(accel[4] << 8) | accel[5]) / 256; } }
-        /// <summary> R side of controller upward </summary>
-        /// <remarks> Add double the previous result to this delta and divide by three.</remarks>
-        public int GyroX { get { return (short)((ushort)(gyro[0] << 8) | gyro[1]) / 64; } }
-        /// <summary> touchpad and button face side of controller upward </summary>
-        /// <remarks> Add double the previous result to this delta and divide by three.</remarks>
-        public int GyroY { get { return (short)((ushort)(gyro[2] << 8) | gyro[3]) / 64; } }
-        /// <summary> Audio/expansion ports upward and light bar/shoulders/bumpers/USB port downward </summary>
-        /// <remarks> Add double the previous result to this delta and divide by three.</remarks>
-        public int GyroZ { get { return (short)((ushort)(gyro[4] << 8) | gyro[5]) / 64; } }        
+        public int GyroX { get { return (Motion == null) ? 0 : (int)(Motion.gyroPitch * 16); } }
+        public int GyroY { get { return (Motion == null) ? 0 : (int)(Motion.gyroYaw * 16); } }
+        public int GyroZ { get { return (Motion == null) ? 0 : (int)(Motion.gyroRoll * 16); } }
     }
 }
