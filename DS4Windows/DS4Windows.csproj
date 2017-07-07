@@ -128,6 +128,7 @@
     <Compile Include="DS4Control\X360Device.designer.cs">
       <DependentUpon>X360Device.cs</DependentUpon>
     </Compile>
+    <Compile Include="DS4Library\Crc32.cs" />
     <Compile Include="DS4Library\DS4Audio.cs" />
     <Compile Include="DS4Library\DS4Device.cs" />
     <Compile Include="DS4Library\DS4Devices.cs" />

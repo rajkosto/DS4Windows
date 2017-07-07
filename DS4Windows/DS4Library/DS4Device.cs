@@ -763,10 +763,26 @@ namespace DS4Windows
                     }
                 }
 
-                if (conType == ConnectionType.BT && btInputReport[0] != 0x11)
+                if (ConnectionType == ConnectionType.BT)
                 {
-                    //Received incorrect report, skip it
-                    continue;
+                    if (btInputReport[0] != 0x11)   //Received incorrect report, skip it
+                        continue;
+
+                    var BT_INPUT_REPORT_CRC32_POS = BT_OUTPUT_REPORT_LENGTH - 4; //last 4 bytes of the 78-sized input report are crc32
+                    UInt32 recvCrc32 = BitConverter.ToUInt32(btInputReport, BT_INPUT_REPORT_CRC32_POS);
+
+                    byte[] crcBuf = new byte[1 + BT_INPUT_REPORT_CRC32_POS]; //0xA1 + the whole input report before the crc32
+                    crcBuf[0] = 0xA1;
+                    Array.Copy(btInputReport, 0, crcBuf, 1, BT_INPUT_REPORT_CRC32_POS);
+
+                    UInt32 calcCrc32 = Crc32.Compute(crcBuf);
+
+                    if (recvCrc32 != calcCrc32)
+                    {
+                        Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "" +
+                                            "> invalid CRC32 in BT input report: 0x" + recvCrc32.ToString("X8") + " expected: 0x" + calcCrc32.ToString("X8"));
+                        continue;
+                    }
                 }
 
                 utcNow = DateTime.UtcNow; // timestamp with UTC in case system time zone changes
