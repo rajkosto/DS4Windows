@@ -122,6 +122,7 @@
       <DependentUpon>ScpHub.cs</DependentUpon>
     </Compile>
     <Compile Include="DS4Control\ScpUtil.cs" />
+    <Compile Include="DS4Control\UdpServer.cs" />
     <Compile Include="DS4Control\X360Device.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -23,11 +23,11 @@ namespace DS4Windows
         public DS4StateExposed[] ExposedState = new DS4StateExposed[DS4_CONTROLLER_COUNT];
         public bool recordingMacro = false;
         public event EventHandler<DebugEventArgs> Debug = null;
-        bool[] buttonsdown = { false, false, false, false };
         List<DS4Controls> dcs = new List<DS4Controls>();
         bool[] held = new bool[DS4_CONTROLLER_COUNT];
         int[] oldmouse = new int[DS4_CONTROLLER_COUNT] { -1, -1, -1, -1 };
         //SoundPlayer sp = new SoundPlayer();
+        private UdpServer _udpServer;
 
         private class X360Data
         {
@@ -36,6 +36,73 @@ namespace DS4Windows
         }
 
         private X360Data[] processingData = new X360Data[4];
+
+        DualShockPadMeta GetPadDetailForIdx(int padIdx)
+        {
+            var meta = new DualShockPadMeta();
+            meta.PadId = (byte)padIdx;
+            meta.Model = DsModel.DS4;
+
+            var d = DS4Controllers[padIdx];
+            if (d == null)
+            {
+                meta.PadMacAddress = null;
+                meta.PadState = DsState.Disconnected;
+                meta.ConnectionType = DsConnection.None;
+                meta.Model = DsModel.None;
+                meta.BatteryStatus = 0;
+                meta.IsActive = false;
+
+                return meta;
+            }
+
+            bool isValidSerial = false;
+            if (d.isValidSerial())
+            {
+                string stringMac = d.getMacAddress();
+                if (stringMac != null)
+                {
+                    stringMac = stringMac.Replace(":", "").Trim();
+                    if (stringMac.Length > 0)
+                    {
+                        meta.PadMacAddress = System.Net.NetworkInformation.PhysicalAddress.Parse(stringMac);
+                        isValidSerial = true;
+
+                        if (d.isSynced() || d.IsAlive())
+                            meta.PadState = DsState.Connected;
+                        else
+                            meta.PadState = DsState.Reserved;
+                    }                   
+                }                
+            }
+
+            if (!isValidSerial)
+            {
+                meta.PadMacAddress = null;
+                meta.PadState = DsState.Disconnected;
+            }
+
+            meta.ConnectionType = (d.getConnectionType() == ConnectionType.USB) ? DsConnection.Usb : DsConnection.Bluetooth;
+            meta.IsActive = !d.isDS4Idle();
+            
+            if (d.isCharging())
+            {
+                if (d.getBattery() >= 100)
+                {
+                    meta.BatteryStatus = (byte)DsBattery.Charged;
+                }
+                else
+                {
+                    meta.BatteryStatus = (byte)((byte)DsBattery.Charging | d.getBattery());
+                }
+            }
+            else
+            {
+                meta.BatteryStatus = (byte)d.getBattery();
+            }
+
+            return meta;
+        }
 
         public ControlService()
         {
@@ -61,6 +128,8 @@ namespace DS4Windows
                 PreviousState[i] = new DS4State();
                 ExposedState[i] = new DS4StateExposed(CurrentState[i]);
             }
+
+            _udpServer = new UdpServer(GetPadDetailForIdx);
         }
 
         void AddtoDS4List()
@@ -199,6 +268,21 @@ namespace DS4Windows
                 }
 
                 running = true;
+
+                if (_udpServer != null)
+                {
+                    var UDP_SERVER_PORT = 26760;
+
+                    try { _udpServer.Start(UDP_SERVER_PORT); }
+                    catch (System.Net.Sockets.SocketException ex)
+                    {
+                        var errMsg = String.Format("Couldn't start UDP server at port {0}, outside applications won't be able to access pad data." + 
+                            " NativeError: 0x{1} SocketError: {2}", UDP_SERVER_PORT, ex.NativeErrorCode.ToString("X8"), ex.SocketErrorCode);
+
+                        LogDebug(errMsg);
+                        Log.LogToTray(errMsg);
+                    }
+                }
             }
             else
             {
@@ -273,6 +357,10 @@ namespace DS4Windows
                     LogDebug(Properties.Resources.StoppingDS4);
 
                 DS4Devices.stopControllers();
+
+                if (_udpServer != null)
+                    _udpServer.Stop();
+
                 if (showlog)
                     LogDebug(Properties.Resources.StoppedDS4Windows);
             }
@@ -801,6 +889,9 @@ namespace DS4Windows
                         }
                     }
                 }
+
+                if (_udpServer != null)
+                    _udpServer.NewReportIncoming(GetPadDetailForIdx(ind), CurrentState[ind]);
 
                 // Output any synthetic events.
                 Mapping.Commit(ind);
