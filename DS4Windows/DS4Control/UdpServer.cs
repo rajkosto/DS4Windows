@@ -133,34 +133,43 @@ namespace DS4Windows
 
 		private Dictionary<IPEndPoint, ClientRequestTimes> clients = new Dictionary<IPEndPoint, ClientRequestTimes>();
 
+        private int BeginPacket(byte[] packetBuf, ushort reqProtocolVersion = MaxProtocolVersion)
+        {
+            int currIdx = 0;
+            packetBuf[currIdx++] = (byte)'D';
+            packetBuf[currIdx++] = (byte)'S';
+            packetBuf[currIdx++] = (byte)'U';
+            packetBuf[currIdx++] = (byte)'S';
+
+            Array.Copy(BitConverter.GetBytes((ushort)reqProtocolVersion), 0, packetBuf, currIdx, 2);
+            currIdx += 2;
+
+            Array.Copy(BitConverter.GetBytes((ushort)packetBuf.Length-16), 0, packetBuf, currIdx, 2);
+            currIdx += 2;
+
+            Array.Clear(packetBuf, currIdx, 4); //place for crc
+            currIdx += 4;
+            
+            Array.Copy(BitConverter.GetBytes((uint)serverId), 0, packetBuf, currIdx, 4);
+            currIdx += 4;
+
+            return currIdx;
+        }
+
+        private void FinishPacket(byte[] packetBuf)
+        {
+            Array.Clear(packetBuf, 8, 4);
+            
+            uint crcCalc = Crc32.Compute(packetBuf);
+            Array.Copy(BitConverter.GetBytes((uint)crcCalc), 0, packetBuf, 8, 4);
+        }
+
 		private void SendPacket(IPEndPoint clientEP, byte[] usefulData, ushort reqProtocolVersion = MaxProtocolVersion)
 		{
 			byte[] packetData = new byte[usefulData.Length + 16];
-			Array.Copy(usefulData, 0, packetData, 16, usefulData.Length);
-
-			int currIdx = 0;
-			packetData[currIdx++] = (byte)'D';
-			packetData[currIdx++] = (byte)'S';
-			packetData[currIdx++] = (byte)'U';
-			packetData[currIdx++] = (byte)'S';
-
-			Array.Copy(BitConverter.GetBytes((ushort)reqProtocolVersion), 0, packetData, currIdx, 2);
-			currIdx += 2;
-
-			Array.Copy(BitConverter.GetBytes((ushort)usefulData.Length), 0, packetData, currIdx, 2);
-			currIdx += 2;
-
-			int crcPos = currIdx;
-			packetData[currIdx++] = 0;
-			packetData[currIdx++] = 0;
-			packetData[currIdx++] = 0;
-			packetData[currIdx++] = 0;
-
-			Array.Copy(BitConverter.GetBytes((uint)serverId), 0, packetData, currIdx, 4);
-			currIdx += 4;
-
-			uint crcCalc = Crc32.Compute(packetData);
-			Array.Copy(BitConverter.GetBytes((uint)crcCalc), 0, packetData, crcPos, 4);
+            int currIdx = BeginPacket(packetData, reqProtocolVersion);
+			Array.Copy(usefulData, 0, packetData, currIdx, usefulData.Length);
+            FinishPacket(packetData);
 
 			try { udpSock.SendTo(packetData, clientEP);	}
 			catch (Exception e) { }
@@ -521,34 +530,7 @@ namespace DS4Windows
 			if (!running)
 				return;
 
-			byte[] outputData = new byte[84];
-			int outIdx = 0;
-			Array.Copy(BitConverter.GetBytes((uint)MessageType.DSUS_PadDataRsp), 0, outputData, outIdx, 4);
-			outIdx += 4;
-
-			outputData[outIdx++] = (byte)padMeta.PadId;
-			outputData[outIdx++] = (byte)padMeta.PadState;
-			outputData[outIdx++] = (byte)padMeta.Model;
-			outputData[outIdx++] = (byte)padMeta.ConnectionType;
-			{
-				byte[] padMac = padMeta.PadMacAddress.GetAddressBytes();
-				outputData[outIdx++] = padMac[0];
-				outputData[outIdx++] = padMac[1];
-				outputData[outIdx++] = padMac[2];
-				outputData[outIdx++] = padMac[3];
-				outputData[outIdx++] = padMac[4];
-				outputData[outIdx++] = padMac[5];
-			}			
-			outputData[outIdx++] = (byte)padMeta.BatteryStatus;
-			outputData[outIdx++] = padMeta.IsActive ? (byte)1 : (byte)0;
-
-			Array.Copy(BitConverter.GetBytes((uint)hidReport.PacketCounter), 0, outputData, outIdx, 4);
-			outIdx += 4;
-
-			if (!ReportToBuffer(hidReport, outputData, ref outIdx))
-				return;
-
-			var clientsList = new List<IPEndPoint>();
+            var clientsList = new List<IPEndPoint>();
 			var now = DateTime.UtcNow;
 			lock (clients)
 			{
@@ -604,9 +586,41 @@ namespace DS4Windows
 				clientsToDelete = null;
 			}
 
-			foreach (var cl in clientsList)
+            if (clientsList.Count <= 0)
+                return;
+
+            byte[] outputData = new byte[100];
+            int outIdx = BeginPacket(outputData, 1001);
+            Array.Copy(BitConverter.GetBytes((uint)MessageType.DSUS_PadDataRsp), 0, outputData, outIdx, 4);
+            outIdx += 4;
+
+            outputData[outIdx++] = (byte)padMeta.PadId;
+            outputData[outIdx++] = (byte)padMeta.PadState;
+            outputData[outIdx++] = (byte)padMeta.Model;
+            outputData[outIdx++] = (byte)padMeta.ConnectionType;
+            {
+                byte[] padMac = padMeta.PadMacAddress.GetAddressBytes();
+                outputData[outIdx++] = padMac[0];
+                outputData[outIdx++] = padMac[1];
+                outputData[outIdx++] = padMac[2];
+                outputData[outIdx++] = padMac[3];
+                outputData[outIdx++] = padMac[4];
+                outputData[outIdx++] = padMac[5];
+            }
+            outputData[outIdx++] = (byte)padMeta.BatteryStatus;
+            outputData[outIdx++] = padMeta.IsActive ? (byte)1 : (byte)0;
+
+            Array.Copy(BitConverter.GetBytes((uint)hidReport.PacketCounter), 0, outputData, outIdx, 4);
+            outIdx += 4;
+
+            if (!ReportToBuffer(hidReport, outputData, ref outIdx))
+                return;
+            else
+                FinishPacket(outputData);
+
+            foreach (var cl in clientsList)
 			{
-				try { SendPacket(cl, outputData, 1001); }
+				try { udpSock.SendTo(outputData, cl); }
 				catch (SocketException ex) { }
 			}
 			clientsList.Clear();
