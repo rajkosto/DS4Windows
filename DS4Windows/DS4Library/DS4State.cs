@@ -9,13 +9,13 @@ namespace DS4Windows
         public bool Square, Triangle, Circle, Cross;
         public bool DpadUp, DpadDown, DpadLeft, DpadRight;
         public bool L1, L2Btn, L3, R1, R2Btn, R3;
-        public bool Share, Options, PS, Touch1, Touch2, TouchButton, TouchRight, TouchLeft, Touch1Finger, Touch2Fingers;
+        public bool Share, Options, PS, Touch1, Touch2, TouchButton, TouchRight,
+            TouchLeft, Touch1Finger, Touch2Fingers;
         public byte Touch1Identifier, Touch2Identifier;
         public byte LX, RX, LY, RY, L2, R2;
         public byte FrameCounter; // 0, 1, 2...62, 63, 0....
         public byte TouchPacketCounter; // we break these out automatically
         public byte Battery; // 0 for charging, 10/20/30/40/50/60/70/80/90/100 for percentage of full
-        public SixAxis Motion;
         public double LSAngle; // Calculated bearing of the LS X,Y coordinates
         public double RSAngle; // Calculated bearing of the RS X,Y coordinates
         public double LSAngleRad; // Calculated bearing of the LS X,Y coordinates (in radians)
@@ -24,12 +24,13 @@ namespace DS4Windows
         public double LYUnit;
         public double RXUnit;
         public double RYUnit;
+        public SixAxis Motion = null;
         public static readonly int DEFAULT_AXISDIR_VALUE = 127;
 
         public struct TrackPadTouch
         {
             public bool IsActive;
-            public byte Id;            
+            public byte Id;
             public short X;
             public short Y;
         }
@@ -50,7 +51,6 @@ namespace DS4Windows
             FrameCounter = 255; // only actually has 6 bits, so this is a null indicator
             TouchPacketCounter = 255; // 8 bits, no great junk value
             Battery = 0;
-            Motion = new SixAxis(0, 0, 0, 0, 0, 0, 0);
             LSAngle = 0.0;
             LSAngleRad = 0.0;
             RSAngle = 0.0;
@@ -59,6 +59,7 @@ namespace DS4Windows
             LYUnit = 0.0;
             RXUnit = 0.0;
             RYUnit = 0.0;
+            Motion = new SixAxis(0, 0, 0, 0, 0, 0, 0);
             TrackPadTouch0.IsActive = false;
             TrackPadTouch1.IsActive = false;
         }
@@ -102,7 +103,6 @@ namespace DS4Windows
             RY = state.RY;
             FrameCounter = state.FrameCounter;
             Battery = state.Battery;
-            Motion = state.Motion;
             LSAngle = state.LSAngle;
             LSAngleRad = state.LSAngleRad;
             RSAngle = state.RSAngle;
@@ -111,6 +111,7 @@ namespace DS4Windows
             LYUnit = state.LYUnit;
             RXUnit = state.RXUnit;
             RYUnit = state.RYUnit;
+            Motion = state.Motion;
             TrackPadTouch0 = state.TrackPadTouch0;
             TrackPadTouch1 = state.TrackPadTouch1;
         }
@@ -159,7 +160,6 @@ namespace DS4Windows
             state.RY = RY;
             state.FrameCounter = FrameCounter;
             state.Battery = Battery;
-            state.Motion = Motion;
             state.LSAngle = LSAngle;
             state.LSAngleRad = LSAngleRad;
             state.RSAngle = RSAngle;
@@ -168,6 +168,7 @@ namespace DS4Windows
             state.LYUnit = LYUnit;
             state.RXUnit = RXUnit;
             state.RYUnit = RYUnit;
+            state.Motion = Motion;
             state.TrackPadTouch0 = TrackPadTouch0;
             state.TrackPadTouch1 = TrackPadTouch1;
         }
@@ -193,20 +194,16 @@ namespace DS4Windows
         {
             double sinAngle = Math.Sin(rotation), cosAngle = Math.Cos(rotation);
             double tempLX = LX - 127.5, tempLY = LY - 127.5;
-            Byte tempx = (Byte)(tempLX * cosAngle - tempLY * sinAngle + 127.5);
-            Byte tempy = (Byte)(tempLX * sinAngle + tempLY * cosAngle + 127.5);
-            LX = tempx;
-            LY = tempy;
+            LX = (Byte)(Global.Clamp(-127.5, (tempLX * cosAngle - tempLY * sinAngle), 127.5) + 127.5);
+            LY = (Byte)(Global.Clamp(-127.5, (tempLX * sinAngle + tempLY * cosAngle), 127.5) + 127.5);
         }
 
         public void rotateRSCoordinates(double rotation)
         {
             double sinAngle = Math.Sin(rotation), cosAngle = Math.Cos(rotation);
             double tempRX = RX - 127.5, tempRY = RY - 127.5;
-            Byte tempx = (Byte)(tempRX * cosAngle - tempRY * sinAngle + 127.5);
-            Byte tempy = (Byte)(tempRX * sinAngle + tempRY * cosAngle + 127.5);
-            RX = tempx;
-            RY = tempy;
+            RX = (Byte)(Global.Clamp(-127.5, (tempRX * cosAngle - tempRY * sinAngle), 127.5) + 127.5);
+            RY = (Byte)(Global.Clamp(-127.5, (tempRX * sinAngle + tempRY * cosAngle), 127.5) + 127.5);
         }
     }
 }

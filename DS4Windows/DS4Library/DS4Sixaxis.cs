@@ -25,6 +25,9 @@ namespace DS4Windows
         public readonly float accelX, accelY, accelZ;       //in Gs/s^2
         public readonly ulong timestampUs;                  //from controller, in microseconds
 
+        public int fakeGyroPitch, fakeGyroYaw, fakeGyroRoll;
+        public int fakeAccelX, fakeAccelY, fakeAccelZ; //what the fuck, he's modifying these in Motion.cs ?!
+
         public SixAxis(ulong microseconds, float gX, float gY, float gZ, float aX, float aY, float aZ, SixAxis prevAxis = null)
         {
             timestampUs = microseconds;
@@ -35,6 +38,16 @@ namespace DS4Windows
             accelY = aY;
             accelZ = aZ;
             previous = prevAxis;
+
+            // Put accel ranges between 0 - 128 abs
+            fakeAccelX = (int)Math.Round(aX * (DS4Cal.ACC_RESOLUTION_PER_G / 64));
+            fakeAccelY = (int)Math.Round(aY * (DS4Cal.ACC_RESOLUTION_PER_G / 64));
+            fakeAccelZ = (int)Math.Round(-aZ * (DS4Cal.ACC_RESOLUTION_PER_G / 64));
+
+            // Legacy values
+            fakeGyroPitch = (int)Math.Round(gX / (256 / DS4Cal.GYRO_RESOLUTION_IN_DEG_SEC));
+            fakeGyroYaw =   (int)Math.Round(gY / (256 / DS4Cal.GYRO_RESOLUTION_IN_DEG_SEC));
+            fakeGyroRoll =  (int)Math.Round(gZ / (256 / DS4Cal.GYRO_RESOLUTION_IN_DEG_SEC));
         }
     }
 

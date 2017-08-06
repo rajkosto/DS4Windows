@@ -76,6 +76,10 @@
             this.nUDL2 = new System.Windows.Forms.NumericUpDown();
             this.gBTouchpad = new System.Windows.Forms.GroupBox();
             this.pnlTPMouse = new System.Windows.Forms.Panel();
+            this.touchpadDisInvertButton = new System.Windows.Forms.Button();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.touchpadInvertComboBox = new System.Windows.Forms.ComboBox();
             this.cbStartTouchpadOff = new System.Windows.Forms.CheckBox();
             this.rBTPControls = new System.Windows.Forms.RadioButton();
             this.rBTPMouse = new System.Windows.Forms.RadioButton();
@@ -253,6 +257,10 @@
             this.tCSens = new System.Windows.Forms.TabControl();
             this.tPDeadzone = new System.Windows.Forms.TabPage();
             this.antiDeadzoneTabPage = new System.Windows.Forms.TabPage();
+            this.nUDSixaxisZAntiDead = new System.Windows.Forms.NumericUpDown();
+            this.nUDSixaxisXAntiDead = new System.Windows.Forms.NumericUpDown();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
             this.nUDR2AntiDead = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.nUDL2AntiDead = new System.Windows.Forms.NumericUpDown();
@@ -262,6 +270,10 @@
             this.nUDLSAntiDead = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.maxZoneTabPage = new System.Windows.Forms.TabPage();
+            this.nUDSixAxisZMaxZone = new System.Windows.Forms.NumericUpDown();
+            this.nUDSixAxisXMaxZone = new System.Windows.Forms.NumericUpDown();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
             this.nUDR2Maxzone = new System.Windows.Forms.NumericUpDown();
             this.nUDL2Maxzone = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
@@ -270,6 +282,19 @@
             this.label6 = new System.Windows.Forms.Label();
             this.nUDLSMaxZone = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
+            this.tPOutCurve = new System.Windows.Forms.TabPage();
+            this.cBSixaxisZOutputCurve = new System.Windows.Forms.ComboBox();
+            this.cBSixaxisXOutputCurve = new System.Windows.Forms.ComboBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.cBR2OutputCurve = new System.Windows.Forms.ComboBox();
+            this.cBL2OutputCurve = new System.Windows.Forms.ComboBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.rsOutCurveComboBox = new System.Windows.Forms.ComboBox();
+            this.lsOutCurveComboBox = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.tPCurve = new System.Windows.Forms.TabPage();
             this.nUDLSCurve = new System.Windows.Forms.NumericUpDown();
             this.nUDRSCurve = new System.Windows.Forms.NumericUpDown();
@@ -277,16 +302,18 @@
             this.lbRSCurvePercent = new System.Windows.Forms.Label();
             this.lbLSCurvePercent = new System.Windows.Forms.Label();
             this.lbLSCurve = new System.Windows.Forms.Label();
-            this.tPOutCurve = new System.Windows.Forms.TabPage();
-            this.rsOutCurveComboBox = new System.Windows.Forms.ComboBox();
-            this.lsOutCurveComboBox = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
+            this.tpRotation = new System.Windows.Forms.TabPage();
+            this.nUDRSRotation = new System.Windows.Forms.NumericUpDown();
+            this.label14 = new System.Windows.Forms.Label();
+            this.nUDLSRotation = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
             this.fLPSettings = new System.Windows.Forms.FlowLayoutPanel();
             this.gBGyro = new System.Windows.Forms.GroupBox();
             this.rBSAControls = new System.Windows.Forms.RadioButton();
             this.rBSAMouse = new System.Windows.Forms.RadioButton();
             this.pnlSAMouse = new System.Windows.Forms.Panel();
+            this.cBGyroMouseXAxis = new System.Windows.Forms.ComboBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.lbGyroSmooth = new System.Windows.Forms.Label();
             this.cBGyroSmooth = new System.Windows.Forms.CheckBox();
             this.lbSmoothWeight = new System.Windows.Forms.Label();
@@ -336,12 +363,27 @@
             this.shareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alwaysOnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cMTouchDisableInvert = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.crossTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.circleTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.squareTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.triangleTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.l1TouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.l2TouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.r1TouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.r2TouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.upTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.downTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.leftTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rightTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.l3TouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.r3TouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oneFingerTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.twoFingerTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shareTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.psTouchInvStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.advColorDialog = new DS4Windows.AdvancedColorDialog();
-            this.tpRotation = new System.Windows.Forms.TabPage();
-            this.label13 = new System.Windows.Forms.Label();
-            this.nUDLSRotation = new System.Windows.Forms.NumericUpDown();
-            this.label14 = new System.Windows.Forms.Label();
-            this.nUDRSRotation = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.nUDRainbow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tBBlueBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tBGreenBar)).BeginInit();
@@ -399,19 +441,26 @@
             this.tCSens.SuspendLayout();
             this.tPDeadzone.SuspendLayout();
             this.antiDeadzoneTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDSixaxisZAntiDead)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDSixaxisXAntiDead)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDR2AntiDead)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDL2AntiDead)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDRSAntiDead)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDLSAntiDead)).BeginInit();
             this.maxZoneTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDSixAxisZMaxZone)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDSixAxisXMaxZone)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDR2Maxzone)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDL2Maxzone)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDRSMaxZone)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDLSMaxZone)).BeginInit();
+            this.tPOutCurve.SuspendLayout();
             this.tPCurve.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDLSCurve)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDRSCurve)).BeginInit();
-            this.tPOutCurve.SuspendLayout();
+            this.tpRotation.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDRSRotation)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDLSRotation)).BeginInit();
             this.fLPSettings.SuspendLayout();
             this.gBGyro.SuspendLayout();
             this.pnlSAMouse.SuspendLayout();
@@ -426,9 +475,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nUDSXS)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDSZS)).BeginInit();
             this.cMGyroTriggers.SuspendLayout();
-            this.tpRotation.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nUDLSRotation)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nUDRSRotation)).BeginInit();
+            this.cMTouchDisableInvert.SuspendLayout();
             this.SuspendLayout();
             // 
             // lowColorChooserButton
@@ -887,6 +934,10 @@
             // 
             // pnlTPMouse
             // 
+            this.pnlTPMouse.Controls.Add(this.touchpadDisInvertButton);
+            this.pnlTPMouse.Controls.Add(this.label25);
+            this.pnlTPMouse.Controls.Add(this.label15);
+            this.pnlTPMouse.Controls.Add(this.touchpadInvertComboBox);
             this.pnlTPMouse.Controls.Add(this.nUDScroll);
             this.pnlTPMouse.Controls.Add(this.cBDoubleTap);
             this.pnlTPMouse.Controls.Add(this.cBScroll);
@@ -899,6 +950,37 @@
             this.pnlTPMouse.Controls.Add(this.cbStartTouchpadOff);
             resources.ApplyResources(this.pnlTPMouse, "pnlTPMouse");
             this.pnlTPMouse.Name = "pnlTPMouse";
+            // 
+            // touchpadDisInvertButton
+            // 
+            this.touchpadDisInvertButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            resources.ApplyResources(this.touchpadDisInvertButton, "touchpadDisInvertButton");
+            this.touchpadDisInvertButton.Name = "touchpadDisInvertButton";
+            this.touchpadDisInvertButton.UseVisualStyleBackColor = true;
+            this.touchpadDisInvertButton.Click += new System.EventHandler(this.touchpadDisInvertButton_Click);
+            // 
+            // label25
+            // 
+            resources.ApplyResources(this.label25, "label25");
+            this.label25.Name = "label25";
+            // 
+            // label15
+            // 
+            resources.ApplyResources(this.label15, "label15");
+            this.label15.Name = "label15";
+            // 
+            // touchpadInvertComboBox
+            // 
+            this.touchpadInvertComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.touchpadInvertComboBox.FormattingEnabled = true;
+            this.touchpadInvertComboBox.Items.AddRange(new object[] {
+            resources.GetString("touchpadInvertComboBox.Items"),
+            resources.GetString("touchpadInvertComboBox.Items1"),
+            resources.GetString("touchpadInvertComboBox.Items2"),
+            resources.GetString("touchpadInvertComboBox.Items3")});
+            resources.ApplyResources(this.touchpadInvertComboBox, "touchpadInvertComboBox");
+            this.touchpadInvertComboBox.Name = "touchpadInvertComboBox";
+            this.touchpadInvertComboBox.SelectedIndexChanged += new System.EventHandler(this.touchpadInvertComboBox_SelectedIndexChanged);
             // 
             // cbStartTouchpadOff
             // 
@@ -2639,8 +2721,8 @@
             this.tCSens.Controls.Add(this.tPDeadzone);
             this.tCSens.Controls.Add(this.antiDeadzoneTabPage);
             this.tCSens.Controls.Add(this.maxZoneTabPage);
-            this.tCSens.Controls.Add(this.tPCurve);
             this.tCSens.Controls.Add(this.tPOutCurve);
+            this.tCSens.Controls.Add(this.tPCurve);
             this.tCSens.Controls.Add(this.tpRotation);
             resources.ApplyResources(this.tCSens, "tCSens");
             this.tCSens.Name = "tCSens";
@@ -2666,6 +2748,10 @@
             // 
             // antiDeadzoneTabPage
             // 
+            this.antiDeadzoneTabPage.Controls.Add(this.nUDSixaxisZAntiDead);
+            this.antiDeadzoneTabPage.Controls.Add(this.nUDSixaxisXAntiDead);
+            this.antiDeadzoneTabPage.Controls.Add(this.label20);
+            this.antiDeadzoneTabPage.Controls.Add(this.label19);
             this.antiDeadzoneTabPage.Controls.Add(this.nUDR2AntiDead);
             this.antiDeadzoneTabPage.Controls.Add(this.label3);
             this.antiDeadzoneTabPage.Controls.Add(this.nUDL2AntiDead);
@@ -2677,6 +2763,50 @@
             resources.ApplyResources(this.antiDeadzoneTabPage, "antiDeadzoneTabPage");
             this.antiDeadzoneTabPage.Name = "antiDeadzoneTabPage";
             this.antiDeadzoneTabPage.UseVisualStyleBackColor = true;
+            // 
+            // nUDSixaxisZAntiDead
+            // 
+            this.nUDSixaxisZAntiDead.DecimalPlaces = 2;
+            this.nUDSixaxisZAntiDead.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            resources.ApplyResources(this.nUDSixaxisZAntiDead, "nUDSixaxisZAntiDead");
+            this.nUDSixaxisZAntiDead.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nUDSixaxisZAntiDead.Name = "nUDSixaxisZAntiDead";
+            this.nUDSixaxisZAntiDead.ValueChanged += new System.EventHandler(this.nUDSixaxisZAntiDead_ValueChanged);
+            // 
+            // nUDSixaxisXAntiDead
+            // 
+            this.nUDSixaxisXAntiDead.DecimalPlaces = 2;
+            this.nUDSixaxisXAntiDead.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            resources.ApplyResources(this.nUDSixaxisXAntiDead, "nUDSixaxisXAntiDead");
+            this.nUDSixaxisXAntiDead.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nUDSixaxisXAntiDead.Name = "nUDSixaxisXAntiDead";
+            this.nUDSixaxisXAntiDead.ValueChanged += new System.EventHandler(this.nUDSixaxisXAntiDead_ValueChanged);
+            // 
+            // label20
+            // 
+            resources.ApplyResources(this.label20, "label20");
+            this.label20.Name = "label20";
+            // 
+            // label19
+            // 
+            resources.ApplyResources(this.label19, "label19");
+            this.label19.Name = "label19";
             // 
             // nUDR2AntiDead
             // 
@@ -2768,6 +2898,10 @@
             // 
             // maxZoneTabPage
             // 
+            this.maxZoneTabPage.Controls.Add(this.nUDSixAxisZMaxZone);
+            this.maxZoneTabPage.Controls.Add(this.nUDSixAxisXMaxZone);
+            this.maxZoneTabPage.Controls.Add(this.label18);
+            this.maxZoneTabPage.Controls.Add(this.label17);
             this.maxZoneTabPage.Controls.Add(this.nUDR2Maxzone);
             this.maxZoneTabPage.Controls.Add(this.nUDL2Maxzone);
             this.maxZoneTabPage.Controls.Add(this.label8);
@@ -2779,6 +2913,60 @@
             resources.ApplyResources(this.maxZoneTabPage, "maxZoneTabPage");
             this.maxZoneTabPage.Name = "maxZoneTabPage";
             this.maxZoneTabPage.UseVisualStyleBackColor = true;
+            // 
+            // nUDSixAxisZMaxZone
+            // 
+            this.nUDSixAxisZMaxZone.DecimalPlaces = 2;
+            this.nUDSixAxisZMaxZone.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            resources.ApplyResources(this.nUDSixAxisZMaxZone, "nUDSixAxisZMaxZone");
+            this.nUDSixAxisZMaxZone.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nUDSixAxisZMaxZone.Name = "nUDSixAxisZMaxZone";
+            this.nUDSixAxisZMaxZone.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nUDSixAxisZMaxZone.ValueChanged += new System.EventHandler(this.nUDSixAxisZMaxZone_ValueChanged);
+            // 
+            // nUDSixAxisXMaxZone
+            // 
+            this.nUDSixAxisXMaxZone.DecimalPlaces = 2;
+            this.nUDSixAxisXMaxZone.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            resources.ApplyResources(this.nUDSixAxisXMaxZone, "nUDSixAxisXMaxZone");
+            this.nUDSixAxisXMaxZone.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nUDSixAxisXMaxZone.Name = "nUDSixAxisXMaxZone";
+            this.nUDSixAxisXMaxZone.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nUDSixAxisXMaxZone.ValueChanged += new System.EventHandler(this.nUDSixAxisXMaxZone_ValueChanged);
+            // 
+            // label18
+            // 
+            resources.ApplyResources(this.label18, "label18");
+            this.label18.Name = "label18";
+            // 
+            // label17
+            // 
+            resources.ApplyResources(this.label17, "label17");
+            this.label17.Name = "label17";
             // 
             // nUDR2Maxzone
             // 
@@ -2888,6 +3076,134 @@
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
             // 
+            // tPOutCurve
+            // 
+            this.tPOutCurve.Controls.Add(this.cBSixaxisZOutputCurve);
+            this.tPOutCurve.Controls.Add(this.cBSixaxisXOutputCurve);
+            this.tPOutCurve.Controls.Add(this.label24);
+            this.tPOutCurve.Controls.Add(this.label23);
+            this.tPOutCurve.Controls.Add(this.cBR2OutputCurve);
+            this.tPOutCurve.Controls.Add(this.cBL2OutputCurve);
+            this.tPOutCurve.Controls.Add(this.label22);
+            this.tPOutCurve.Controls.Add(this.label21);
+            this.tPOutCurve.Controls.Add(this.rsOutCurveComboBox);
+            this.tPOutCurve.Controls.Add(this.lsOutCurveComboBox);
+            this.tPOutCurve.Controls.Add(this.label10);
+            this.tPOutCurve.Controls.Add(this.label9);
+            resources.ApplyResources(this.tPOutCurve, "tPOutCurve");
+            this.tPOutCurve.Name = "tPOutCurve";
+            this.tPOutCurve.UseVisualStyleBackColor = true;
+            // 
+            // cBSixaxisZOutputCurve
+            // 
+            this.cBSixaxisZOutputCurve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cBSixaxisZOutputCurve.DropDownWidth = 70;
+            this.cBSixaxisZOutputCurve.FormattingEnabled = true;
+            this.cBSixaxisZOutputCurve.Items.AddRange(new object[] {
+            resources.GetString("cBSixaxisZOutputCurve.Items"),
+            resources.GetString("cBSixaxisZOutputCurve.Items1"),
+            resources.GetString("cBSixaxisZOutputCurve.Items2")});
+            resources.ApplyResources(this.cBSixaxisZOutputCurve, "cBSixaxisZOutputCurve");
+            this.cBSixaxisZOutputCurve.Name = "cBSixaxisZOutputCurve";
+            this.cBSixaxisZOutputCurve.SelectedIndexChanged += new System.EventHandler(this.cBSixaxisZOutputCurve_SelectedIndexChanged);
+            // 
+            // cBSixaxisXOutputCurve
+            // 
+            this.cBSixaxisXOutputCurve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cBSixaxisXOutputCurve.DropDownWidth = 70;
+            this.cBSixaxisXOutputCurve.FormattingEnabled = true;
+            this.cBSixaxisXOutputCurve.Items.AddRange(new object[] {
+            resources.GetString("cBSixaxisXOutputCurve.Items"),
+            resources.GetString("cBSixaxisXOutputCurve.Items1"),
+            resources.GetString("cBSixaxisXOutputCurve.Items2")});
+            resources.ApplyResources(this.cBSixaxisXOutputCurve, "cBSixaxisXOutputCurve");
+            this.cBSixaxisXOutputCurve.Name = "cBSixaxisXOutputCurve";
+            this.cBSixaxisXOutputCurve.SelectedIndexChanged += new System.EventHandler(this.cBSixaxisXOutputCurve_SelectedIndexChanged);
+            // 
+            // label24
+            // 
+            resources.ApplyResources(this.label24, "label24");
+            this.label24.Name = "label24";
+            // 
+            // label23
+            // 
+            resources.ApplyResources(this.label23, "label23");
+            this.label23.Name = "label23";
+            // 
+            // cBR2OutputCurve
+            // 
+            this.cBR2OutputCurve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cBR2OutputCurve.DropDownWidth = 70;
+            this.cBR2OutputCurve.FormattingEnabled = true;
+            this.cBR2OutputCurve.Items.AddRange(new object[] {
+            resources.GetString("cBR2OutputCurve.Items"),
+            resources.GetString("cBR2OutputCurve.Items1"),
+            resources.GetString("cBR2OutputCurve.Items2")});
+            resources.ApplyResources(this.cBR2OutputCurve, "cBR2OutputCurve");
+            this.cBR2OutputCurve.Name = "cBR2OutputCurve";
+            this.cBR2OutputCurve.SelectedIndexChanged += new System.EventHandler(this.cBR2OutputCurve_SelectedIndexChanged);
+            // 
+            // cBL2OutputCurve
+            // 
+            this.cBL2OutputCurve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cBL2OutputCurve.DropDownWidth = 70;
+            this.cBL2OutputCurve.FormattingEnabled = true;
+            this.cBL2OutputCurve.Items.AddRange(new object[] {
+            resources.GetString("cBL2OutputCurve.Items"),
+            resources.GetString("cBL2OutputCurve.Items1"),
+            resources.GetString("cBL2OutputCurve.Items2")});
+            resources.ApplyResources(this.cBL2OutputCurve, "cBL2OutputCurve");
+            this.cBL2OutputCurve.Name = "cBL2OutputCurve";
+            this.cBL2OutputCurve.SelectedIndexChanged += new System.EventHandler(this.cBL2OutputCurve_SelectedIndexChanged);
+            // 
+            // label22
+            // 
+            resources.ApplyResources(this.label22, "label22");
+            this.label22.Name = "label22";
+            // 
+            // label21
+            // 
+            resources.ApplyResources(this.label21, "label21");
+            this.label21.Name = "label21";
+            // 
+            // rsOutCurveComboBox
+            // 
+            this.rsOutCurveComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.rsOutCurveComboBox.DropDownWidth = 120;
+            this.rsOutCurveComboBox.FormattingEnabled = true;
+            this.rsOutCurveComboBox.Items.AddRange(new object[] {
+            resources.GetString("rsOutCurveComboBox.Items"),
+            resources.GetString("rsOutCurveComboBox.Items1"),
+            resources.GetString("rsOutCurveComboBox.Items2"),
+            resources.GetString("rsOutCurveComboBox.Items3")});
+            resources.ApplyResources(this.rsOutCurveComboBox, "rsOutCurveComboBox");
+            this.rsOutCurveComboBox.Name = "rsOutCurveComboBox";
+            this.rsOutCurveComboBox.SelectedIndexChanged += new System.EventHandler(this.rsOutCurveComboBox_SelectedIndexChanged);
+            // 
+            // lsOutCurveComboBox
+            // 
+            this.lsOutCurveComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.lsOutCurveComboBox.DropDownWidth = 120;
+            this.lsOutCurveComboBox.FormattingEnabled = true;
+            this.lsOutCurveComboBox.Items.AddRange(new object[] {
+            resources.GetString("lsOutCurveComboBox.Items"),
+            resources.GetString("lsOutCurveComboBox.Items1"),
+            resources.GetString("lsOutCurveComboBox.Items2"),
+            resources.GetString("lsOutCurveComboBox.Items3")});
+            resources.ApplyResources(this.lsOutCurveComboBox, "lsOutCurveComboBox");
+            this.lsOutCurveComboBox.Name = "lsOutCurveComboBox";
+            this.lsOutCurveComboBox.SelectedIndexChanged += new System.EventHandler(this.lsOutCurveComboBox_SelectedIndexChanged);
+            // 
+            // label10
+            // 
+            resources.ApplyResources(this.label10, "label10");
+            this.label10.Name = "label10";
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
             // tPCurve
             // 
             this.tPCurve.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -2942,53 +3258,57 @@
             resources.ApplyResources(this.lbLSCurve, "lbLSCurve");
             this.lbLSCurve.Name = "lbLSCurve";
             // 
-            // tPOutCurve
+            // tpRotation
             // 
-            this.tPOutCurve.Controls.Add(this.rsOutCurveComboBox);
-            this.tPOutCurve.Controls.Add(this.lsOutCurveComboBox);
-            this.tPOutCurve.Controls.Add(this.label10);
-            this.tPOutCurve.Controls.Add(this.label9);
-            resources.ApplyResources(this.tPOutCurve, "tPOutCurve");
-            this.tPOutCurve.Name = "tPOutCurve";
-            this.tPOutCurve.UseVisualStyleBackColor = true;
+            this.tpRotation.Controls.Add(this.nUDRSRotation);
+            this.tpRotation.Controls.Add(this.label14);
+            this.tpRotation.Controls.Add(this.nUDLSRotation);
+            this.tpRotation.Controls.Add(this.label13);
+            resources.ApplyResources(this.tpRotation, "tpRotation");
+            this.tpRotation.Name = "tpRotation";
+            this.tpRotation.UseVisualStyleBackColor = true;
             // 
-            // rsOutCurveComboBox
+            // nUDRSRotation
             // 
-            this.rsOutCurveComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.rsOutCurveComboBox.DropDownWidth = 100;
-            this.rsOutCurveComboBox.FormattingEnabled = true;
-            this.rsOutCurveComboBox.Items.AddRange(new object[] {
-            resources.GetString("rsOutCurveComboBox.Items"),
-            resources.GetString("rsOutCurveComboBox.Items1"),
-            resources.GetString("rsOutCurveComboBox.Items2"),
-            resources.GetString("rsOutCurveComboBox.Items3")});
-            resources.ApplyResources(this.rsOutCurveComboBox, "rsOutCurveComboBox");
-            this.rsOutCurveComboBox.Name = "rsOutCurveComboBox";
-            this.rsOutCurveComboBox.SelectedIndexChanged += new System.EventHandler(this.rsOutCurveComboBox_SelectedIndexChanged);
+            resources.ApplyResources(this.nUDRSRotation, "nUDRSRotation");
+            this.nUDRSRotation.Maximum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            0});
+            this.nUDRSRotation.Minimum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            -2147483648});
+            this.nUDRSRotation.Name = "nUDRSRotation";
+            this.nUDRSRotation.ValueChanged += new System.EventHandler(this.nUDRSRotation_ValueChanged);
             // 
-            // lsOutCurveComboBox
+            // label14
             // 
-            this.lsOutCurveComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.lsOutCurveComboBox.DropDownWidth = 100;
-            this.lsOutCurveComboBox.FormattingEnabled = true;
-            this.lsOutCurveComboBox.Items.AddRange(new object[] {
-            resources.GetString("lsOutCurveComboBox.Items"),
-            resources.GetString("lsOutCurveComboBox.Items1"),
-            resources.GetString("lsOutCurveComboBox.Items2"),
-            resources.GetString("lsOutCurveComboBox.Items3")});
-            resources.ApplyResources(this.lsOutCurveComboBox, "lsOutCurveComboBox");
-            this.lsOutCurveComboBox.Name = "lsOutCurveComboBox";
-            this.lsOutCurveComboBox.SelectedIndexChanged += new System.EventHandler(this.lsOutCurveComboBox_SelectedIndexChanged);
+            resources.ApplyResources(this.label14, "label14");
+            this.label14.Name = "label14";
             // 
-            // label10
+            // nUDLSRotation
             // 
-            resources.ApplyResources(this.label10, "label10");
-            this.label10.Name = "label10";
+            resources.ApplyResources(this.nUDLSRotation, "nUDLSRotation");
+            this.nUDLSRotation.Maximum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            0});
+            this.nUDLSRotation.Minimum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            -2147483648});
+            this.nUDLSRotation.Name = "nUDLSRotation";
+            this.nUDLSRotation.ValueChanged += new System.EventHandler(this.nUDLSRotation_ValueChanged);
             // 
-            // label9
+            // label13
             // 
-            resources.ApplyResources(this.label9, "label9");
-            this.label9.Name = "label9";
+            resources.ApplyResources(this.label13, "label13");
+            this.label13.Name = "label13";
             // 
             // fLPSettings
             // 
@@ -3031,6 +3351,8 @@
             // 
             // pnlSAMouse
             // 
+            this.pnlSAMouse.Controls.Add(this.cBGyroMouseXAxis);
+            this.pnlSAMouse.Controls.Add(this.label16);
             this.pnlSAMouse.Controls.Add(this.lbGyroSmooth);
             this.pnlSAMouse.Controls.Add(this.cBGyroSmooth);
             this.pnlSAMouse.Controls.Add(this.lbSmoothWeight);
@@ -3048,6 +3370,22 @@
             this.pnlSAMouse.Controls.Add(this.lbGyroSens);
             resources.ApplyResources(this.pnlSAMouse, "pnlSAMouse");
             this.pnlSAMouse.Name = "pnlSAMouse";
+            // 
+            // cBGyroMouseXAxis
+            // 
+            this.cBGyroMouseXAxis.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cBGyroMouseXAxis.FormattingEnabled = true;
+            this.cBGyroMouseXAxis.Items.AddRange(new object[] {
+            resources.GetString("cBGyroMouseXAxis.Items"),
+            resources.GetString("cBGyroMouseXAxis.Items1")});
+            resources.ApplyResources(this.cBGyroMouseXAxis, "cBGyroMouseXAxis");
+            this.cBGyroMouseXAxis.Name = "cBGyroMouseXAxis";
+            this.cBGyroMouseXAxis.SelectedIndexChanged += new System.EventHandler(this.cBGyroMouseXAxis_SelectedIndexChanged);
+            // 
+            // label16
+            // 
+            resources.ApplyResources(this.label16, "label16");
+            this.label16.Name = "label16";
             // 
             // lbGyroSmooth
             // 
@@ -3575,57 +3913,165 @@
             resources.ApplyResources(this.alwaysOnToolStripMenuItem, "alwaysOnToolStripMenuItem");
             this.alwaysOnToolStripMenuItem.CheckedChanged += new System.EventHandler(this.SATrigger_CheckedChanged);
             // 
-            // tpRotation
+            // cMTouchDisableInvert
             // 
-            this.tpRotation.Controls.Add(this.nUDRSRotation);
-            this.tpRotation.Controls.Add(this.label14);
-            this.tpRotation.Controls.Add(this.nUDLSRotation);
-            this.tpRotation.Controls.Add(this.label13);
-            resources.ApplyResources(this.tpRotation, "tpRotation");
-            this.tpRotation.Name = "tpRotation";
-            this.tpRotation.UseVisualStyleBackColor = true;
+            this.cMTouchDisableInvert.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.crossTouchInvStripMenuItem,
+            this.circleTouchInvStripMenuItem,
+            this.squareTouchInvStripMenuItem,
+            this.triangleTouchInvStripMenuItem,
+            this.l1TouchInvStripMenuItem,
+            this.l2TouchInvStripMenuItem,
+            this.r1TouchInvStripMenuItem,
+            this.r2TouchInvStripMenuItem,
+            this.upTouchInvStripMenuItem,
+            this.downTouchInvStripMenuItem,
+            this.leftTouchInvStripMenuItem,
+            this.rightTouchInvStripMenuItem,
+            this.l3TouchInvStripMenuItem,
+            this.r3TouchInvStripMenuItem,
+            this.oneFingerTouchInvStripMenuItem,
+            this.twoFingerTouchInvStripMenuItem,
+            this.optionsTouchInvStripMenuItem,
+            this.shareTouchInvStripMenuItem,
+            this.psTouchInvStripMenuItem});
+            this.cMTouchDisableInvert.Name = "cMTouchDisableInvert";
+            this.cMTouchDisableInvert.ShowCheckMargin = true;
+            this.cMTouchDisableInvert.ShowImageMargin = false;
+            resources.ApplyResources(this.cMTouchDisableInvert, "cMTouchDisableInvert");
             // 
-            // label13
+            // crossTouchInvStripMenuItem
             // 
-            resources.ApplyResources(this.label13, "label13");
-            this.label13.Name = "label13";
+            this.crossTouchInvStripMenuItem.CheckOnClick = true;
+            this.crossTouchInvStripMenuItem.Name = "crossTouchInvStripMenuItem";
+            resources.ApplyResources(this.crossTouchInvStripMenuItem, "crossTouchInvStripMenuItem");
+            this.crossTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
             // 
-            // nUDLSRotation
+            // circleTouchInvStripMenuItem
             // 
-            resources.ApplyResources(this.nUDLSRotation, "nUDLSRotation");
-            this.nUDLSRotation.Maximum = new decimal(new int[] {
-            180,
-            0,
-            0,
-            0});
-            this.nUDLSRotation.Minimum = new decimal(new int[] {
-            180,
-            0,
-            0,
-            -2147483648});
-            this.nUDLSRotation.Name = "nUDLSRotation";
-            this.nUDLSRotation.ValueChanged += new System.EventHandler(this.nUDLSRotation_ValueChanged);
+            this.circleTouchInvStripMenuItem.CheckOnClick = true;
+            this.circleTouchInvStripMenuItem.Name = "circleTouchInvStripMenuItem";
+            resources.ApplyResources(this.circleTouchInvStripMenuItem, "circleTouchInvStripMenuItem");
+            this.circleTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
             // 
-            // label14
+            // squareTouchInvStripMenuItem
             // 
-            resources.ApplyResources(this.label14, "label14");
-            this.label14.Name = "label14";
+            this.squareTouchInvStripMenuItem.CheckOnClick = true;
+            this.squareTouchInvStripMenuItem.Name = "squareTouchInvStripMenuItem";
+            resources.ApplyResources(this.squareTouchInvStripMenuItem, "squareTouchInvStripMenuItem");
+            this.squareTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
             // 
-            // nUDRSRotation
+            // triangleTouchInvStripMenuItem
             // 
-            resources.ApplyResources(this.nUDRSRotation, "nUDRSRotation");
-            this.nUDRSRotation.Maximum = new decimal(new int[] {
-            180,
-            0,
-            0,
-            0});
-            this.nUDRSRotation.Minimum = new decimal(new int[] {
-            180,
-            0,
-            0,
-            -2147483648});
-            this.nUDRSRotation.Name = "nUDRSRotation";
-            this.nUDRSRotation.ValueChanged += new System.EventHandler(this.nUDRSRotation_ValueChanged);
+            this.triangleTouchInvStripMenuItem.CheckOnClick = true;
+            this.triangleTouchInvStripMenuItem.Name = "triangleTouchInvStripMenuItem";
+            resources.ApplyResources(this.triangleTouchInvStripMenuItem, "triangleTouchInvStripMenuItem");
+            this.triangleTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // l1TouchInvStripMenuItem
+            // 
+            this.l1TouchInvStripMenuItem.CheckOnClick = true;
+            this.l1TouchInvStripMenuItem.Name = "l1TouchInvStripMenuItem";
+            resources.ApplyResources(this.l1TouchInvStripMenuItem, "l1TouchInvStripMenuItem");
+            this.l1TouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // l2TouchInvStripMenuItem
+            // 
+            this.l2TouchInvStripMenuItem.CheckOnClick = true;
+            this.l2TouchInvStripMenuItem.Name = "l2TouchInvStripMenuItem";
+            resources.ApplyResources(this.l2TouchInvStripMenuItem, "l2TouchInvStripMenuItem");
+            this.l2TouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // r1TouchInvStripMenuItem
+            // 
+            this.r1TouchInvStripMenuItem.CheckOnClick = true;
+            this.r1TouchInvStripMenuItem.Name = "r1TouchInvStripMenuItem";
+            resources.ApplyResources(this.r1TouchInvStripMenuItem, "r1TouchInvStripMenuItem");
+            this.r1TouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // r2TouchInvStripMenuItem
+            // 
+            this.r2TouchInvStripMenuItem.CheckOnClick = true;
+            this.r2TouchInvStripMenuItem.Name = "r2TouchInvStripMenuItem";
+            resources.ApplyResources(this.r2TouchInvStripMenuItem, "r2TouchInvStripMenuItem");
+            this.r2TouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // upTouchInvStripMenuItem
+            // 
+            this.upTouchInvStripMenuItem.CheckOnClick = true;
+            this.upTouchInvStripMenuItem.Name = "upTouchInvStripMenuItem";
+            resources.ApplyResources(this.upTouchInvStripMenuItem, "upTouchInvStripMenuItem");
+            this.upTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // downTouchInvStripMenuItem
+            // 
+            this.downTouchInvStripMenuItem.CheckOnClick = true;
+            this.downTouchInvStripMenuItem.Name = "downTouchInvStripMenuItem";
+            resources.ApplyResources(this.downTouchInvStripMenuItem, "downTouchInvStripMenuItem");
+            this.downTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // leftTouchInvStripMenuItem
+            // 
+            this.leftTouchInvStripMenuItem.CheckOnClick = true;
+            this.leftTouchInvStripMenuItem.Name = "leftTouchInvStripMenuItem";
+            resources.ApplyResources(this.leftTouchInvStripMenuItem, "leftTouchInvStripMenuItem");
+            this.leftTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // rightTouchInvStripMenuItem
+            // 
+            this.rightTouchInvStripMenuItem.CheckOnClick = true;
+            this.rightTouchInvStripMenuItem.Name = "rightTouchInvStripMenuItem";
+            resources.ApplyResources(this.rightTouchInvStripMenuItem, "rightTouchInvStripMenuItem");
+            this.rightTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // l3TouchInvStripMenuItem
+            // 
+            this.l3TouchInvStripMenuItem.CheckOnClick = true;
+            this.l3TouchInvStripMenuItem.Name = "l3TouchInvStripMenuItem";
+            resources.ApplyResources(this.l3TouchInvStripMenuItem, "l3TouchInvStripMenuItem");
+            this.l3TouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // r3TouchInvStripMenuItem
+            // 
+            this.r3TouchInvStripMenuItem.CheckOnClick = true;
+            this.r3TouchInvStripMenuItem.Name = "r3TouchInvStripMenuItem";
+            resources.ApplyResources(this.r3TouchInvStripMenuItem, "r3TouchInvStripMenuItem");
+            this.r3TouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // oneFingerTouchInvStripMenuItem
+            // 
+            this.oneFingerTouchInvStripMenuItem.CheckOnClick = true;
+            this.oneFingerTouchInvStripMenuItem.Name = "oneFingerTouchInvStripMenuItem";
+            resources.ApplyResources(this.oneFingerTouchInvStripMenuItem, "oneFingerTouchInvStripMenuItem");
+            this.oneFingerTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // twoFingerTouchInvStripMenuItem
+            // 
+            this.twoFingerTouchInvStripMenuItem.CheckOnClick = true;
+            this.twoFingerTouchInvStripMenuItem.Name = "twoFingerTouchInvStripMenuItem";
+            resources.ApplyResources(this.twoFingerTouchInvStripMenuItem, "twoFingerTouchInvStripMenuItem");
+            this.twoFingerTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // optionsTouchInvStripMenuItem
+            // 
+            this.optionsTouchInvStripMenuItem.CheckOnClick = true;
+            this.optionsTouchInvStripMenuItem.Name = "optionsTouchInvStripMenuItem";
+            resources.ApplyResources(this.optionsTouchInvStripMenuItem, "optionsTouchInvStripMenuItem");
+            this.optionsTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // shareTouchInvStripMenuItem
+            // 
+            this.shareTouchInvStripMenuItem.CheckOnClick = true;
+            this.shareTouchInvStripMenuItem.Name = "shareTouchInvStripMenuItem";
+            resources.ApplyResources(this.shareTouchInvStripMenuItem, "shareTouchInvStripMenuItem");
+            this.shareTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
+            // 
+            // psTouchInvStripMenuItem
+            // 
+            this.psTouchInvStripMenuItem.CheckOnClick = true;
+            this.psTouchInvStripMenuItem.Name = "psTouchInvStripMenuItem";
+            resources.ApplyResources(this.psTouchInvStripMenuItem, "psTouchInvStripMenuItem");
+            this.psTouchInvStripMenuItem.CheckedChanged += new System.EventHandler(this.TouchDisableInvert_CheckedChanged);
             // 
             // Options
             // 
@@ -3707,22 +4153,30 @@
             this.tPDeadzone.PerformLayout();
             this.antiDeadzoneTabPage.ResumeLayout(false);
             this.antiDeadzoneTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDSixaxisZAntiDead)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDSixaxisXAntiDead)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDR2AntiDead)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDL2AntiDead)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDRSAntiDead)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDLSAntiDead)).EndInit();
             this.maxZoneTabPage.ResumeLayout(false);
             this.maxZoneTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDSixAxisZMaxZone)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDSixAxisXMaxZone)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDR2Maxzone)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDL2Maxzone)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDRSMaxZone)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDLSMaxZone)).EndInit();
+            this.tPOutCurve.ResumeLayout(false);
+            this.tPOutCurve.PerformLayout();
             this.tPCurve.ResumeLayout(false);
             this.tPCurve.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nUDLSCurve)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDRSCurve)).EndInit();
-            this.tPOutCurve.ResumeLayout(false);
-            this.tPOutCurve.PerformLayout();
+            this.tpRotation.ResumeLayout(false);
+            this.tpRotation.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDRSRotation)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nUDLSRotation)).EndInit();
             this.fLPSettings.ResumeLayout(false);
             this.gBGyro.ResumeLayout(false);
             this.gBGyro.PerformLayout();
@@ -3740,10 +4194,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nUDSXS)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUDSZS)).EndInit();
             this.cMGyroTriggers.ResumeLayout(false);
-            this.tpRotation.ResumeLayout(false);
-            this.tpRotation.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nUDLSRotation)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nUDRSRotation)).EndInit();
+            this.cMTouchDisableInvert.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -4064,5 +4515,47 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.NumericUpDown nUDLSRotation;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox touchpadInvertComboBox;
+        private System.Windows.Forms.ComboBox cBGyroMouseXAxis;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.NumericUpDown nUDSixAxisZMaxZone;
+        private System.Windows.Forms.NumericUpDown nUDSixAxisXMaxZone;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.NumericUpDown nUDSixaxisZAntiDead;
+        private System.Windows.Forms.NumericUpDown nUDSixaxisXAntiDead;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.ComboBox cBR2OutputCurve;
+        private System.Windows.Forms.ComboBox cBL2OutputCurve;
+        private System.Windows.Forms.ComboBox cBSixaxisZOutputCurve;
+        private System.Windows.Forms.ComboBox cBSixaxisXOutputCurve;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.ContextMenuStrip cMTouchDisableInvert;
+        private System.Windows.Forms.ToolStripMenuItem crossTouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem circleTouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem squareTouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem triangleTouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem l1TouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem l2TouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem r1TouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem r2TouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem upTouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem downTouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem leftTouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rightTouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem l3TouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem r3TouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem oneFingerTouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem twoFingerTouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem optionsTouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem shareTouchInvStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem psTouchInvStripMenuItem;
+        private System.Windows.Forms.Button touchpadDisInvertButton;
+        private System.Windows.Forms.Label label25;
     }
 }
