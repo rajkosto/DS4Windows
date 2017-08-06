@@ -13,6 +13,7 @@ namespace DS4Windows
         private static HashSet<string> DevicePaths = new HashSet<string>();
         // Keep instance of opened exclusive mode devices not in use (Charging while using BT connection)
         private static List<HidDevice> DisabledDevices = new List<HidDevice>();
+        private static Stopwatch sw = new Stopwatch();
         public static bool isExclusiveMode = false;
 
         private static string devicePathToInstanceId(string devicePath)
@@ -46,7 +47,7 @@ namespace DS4Windows
                 string devicePlural = "device" + (devCount == 0 || devCount > 1 ? "s" : "");
                 //Log.LogToGui("Found " + devCount + " possible " + devicePlural + ". Examining " + devicePlural + ".", false);
 
-                for (int i = 0;  i < devCount; i++)
+                for (int i = 0; i < devCount; i++)
                 //foreach (HidDevice hDevice in hDevices)
                 {
                     HidDevice hDevice = tempList[i];
@@ -249,7 +250,6 @@ namespace DS4Windows
 
         public static void reEnableDevice(string deviceInstanceId)
         {
-            Stopwatch sw = new Stopwatch();
             bool success;
             Guid hidGuid = new Guid();
             NativeMethods.HidD_GetHidGuid(ref hidGuid);
@@ -284,7 +284,8 @@ namespace DS4Windows
                 throw new Exception("Error disabling device, error code = " + Marshal.GetLastWin32Error());
             }
 
-            sw.Start();
+            //System.Threading.Thread.Sleep(50);
+            sw.Restart();
             while (sw.ElapsedMilliseconds < 50)
             {
                 // Use SpinWait to keep control of current thread. Using Sleep could potentially
