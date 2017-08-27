@@ -717,7 +717,7 @@ namespace DS4Windows
                 nUDTap.Value = 0;
                 cBTap.Checked = false;
                 cBDoubleTap.Checked = false;
-                cBTouchpadJitterCompensation.Checked = true;
+                cBTouchpadJitterCompensation.Checked = false;
                 touchpadInvertComboBox.SelectedIndex = 0;
                 cBlowerRCOn.Checked = false;
                 cBFlushHIDQueue.Checked = false;
@@ -1053,42 +1053,38 @@ namespace DS4Windows
             if (Form.ActiveForm == root && cBControllerInput.Checked && tCControls.SelectedIndex < 1)
             {
                 int tempDeviceNum = (int)nUDSixaxis.Value - 1;
-                switch (Program.rootHub.GetInputkeys(tempDeviceNum))
+                switch (Program.rootHub.GetActiveInputControl(tempDeviceNum))
                 {
-                    case ("nothing"): break;
-                    case ("Cross"): Show_ControlsBn(bnCross, e); break;
-                    case ("Circle"): Show_ControlsBn(bnCircle, e); break;
-                    case ("Square"): Show_ControlsBn(bnSquare, e); break;
-                    case ("Triangle"): Show_ControlsBn(bnTriangle, e); break;
-                    case ("Options"): Show_ControlsBn(bnOptions, e); break;
-                    case ("Share"): Show_ControlsBn(bnShare, e); break;
-                    case ("Up"): Show_ControlsBn(bnUp, e); break;
-                    case ("Down"): Show_ControlsBn(bnDown, e); break;
-                    case ("Left"): Show_ControlsBn(bnLeft, e); break;
-                    case ("Right"): Show_ControlsBn(bnRight, e); break;
-                    case ("PS"): Show_ControlsBn(bnPS, e); break;
-                    case ("L1"): Show_ControlsBn(bnL1, e); break;
-                    case ("R1"): Show_ControlsBn(bnR1, e); break;
-                    case ("L2"): Show_ControlsBn(bnL2, e); break;
-                    case ("R2"): Show_ControlsBn(bnR2, e); break;
-                    case ("L3"): Show_ControlsBn(bnL3, e); break;
-                    case ("R3"): Show_ControlsBn(bnR3, e); break;
-                    case ("Touch Left"): Show_ControlsBn(bnTouchLeft, e); break;
-                    case ("Touch Right"): Show_ControlsBn(bnTouchRight, e); break;
-                    case ("Touch Multi"): Show_ControlsBn(bnTouchMulti, e); break;
-                    case ("Touch Upper"): Show_ControlsBn(bnTouchUpper, e); break;
-                    case ("LS Up"): Show_ControlsBn(bnLSUp, e); break;
-                    case ("LS Down"): Show_ControlsBn(bnLSDown, e); break;
-                    case ("LS Left"): Show_ControlsBn(bnLSLeft, e); break;
-                    case ("LS Right"): Show_ControlsBn(bnLSRight, e); break;
-                    case ("RS Up"): Show_ControlsBn(bnRSUp, e); break;
-                    case ("RS Down"): Show_ControlsBn(bnRSDown, e); break;
-                    case ("RS Left"): Show_ControlsBn(bnRSLeft, e); break;
-                    case ("RS Right"): Show_ControlsBn(bnRSRight, e); break;
-                    case ("GyroXP"): Show_ControlsBn(bnGyroXP, e); break;
-                    case ("GyroXN"): Show_ControlsBn(bnGyroXN, e); break;
-                    case ("GyroZP"): Show_ControlsBn(bnGyroZP, e); break;
-                    case ("GyroZN"): Show_ControlsBn(bnGyroZN, e); break;
+                    case DS4Controls.None: break;
+                    case DS4Controls.Cross: Show_ControlsBn(bnCross, e); break;
+                    case DS4Controls.Circle: Show_ControlsBn(bnCircle, e); break;
+                    case DS4Controls.Square: Show_ControlsBn(bnSquare, e); break;
+                    case DS4Controls.Triangle: Show_ControlsBn(bnTriangle, e); break;
+                    case DS4Controls.Options: Show_ControlsBn(bnOptions, e); break;
+                    case DS4Controls.Share: Show_ControlsBn(bnShare, e); break;
+                    case DS4Controls.DpadUp: Show_ControlsBn(bnUp, e); break;
+                    case DS4Controls.DpadDown: Show_ControlsBn(bnDown, e); break;
+                    case DS4Controls.DpadLeft: Show_ControlsBn(bnLeft, e); break;
+                    case DS4Controls.DpadRight: Show_ControlsBn(bnRight, e); break;
+                    case DS4Controls.PS: Show_ControlsBn(bnPS, e); break;
+                    case DS4Controls.L1: Show_ControlsBn(bnL1, e); break;
+                    case DS4Controls.R1: Show_ControlsBn(bnR1, e); break;
+                    case DS4Controls.L2: Show_ControlsBn(bnL2, e); break;
+                    case DS4Controls.R2: Show_ControlsBn(bnR2, e); break;
+                    case DS4Controls.L3: Show_ControlsBn(bnL3, e); break;
+                    case DS4Controls.R3: Show_ControlsBn(bnR3, e); break;
+                    case DS4Controls.TouchLeft: Show_ControlsBn(bnTouchLeft, e); break;
+                    case DS4Controls.TouchRight: Show_ControlsBn(bnTouchRight, e); break;
+                    case DS4Controls.TouchMulti: Show_ControlsBn(bnTouchMulti, e); break;
+                    case DS4Controls.TouchUpper: Show_ControlsBn(bnTouchUpper, e); break;
+                    case DS4Controls.LYNeg: Show_ControlsBn(bnLSUp, e); break;
+                    case DS4Controls.LYPos: Show_ControlsBn(bnLSDown, e); break;
+                    case DS4Controls.LXNeg: Show_ControlsBn(bnLSLeft, e); break;
+                    case DS4Controls.LXPos: Show_ControlsBn(bnLSRight, e); break;
+                    case DS4Controls.RYNeg: Show_ControlsBn(bnRSUp, e); break;
+                    case DS4Controls.RYPos: Show_ControlsBn(bnRSDown, e); break;
+                    case DS4Controls.RXNeg: Show_ControlsBn(bnRSLeft, e); break;
+                    case DS4Controls.RXPos: Show_ControlsBn(bnRSRight, e); break;
                     default: break;
                 }
             }
@@ -1303,7 +1299,7 @@ namespace DS4Windows
             SATriggers[device] = string.Join(",", ints);
 
             ints.Clear();
-            for (int i = 0, trigLen = cMTouchDisableInvert.Items.Count - 1; i < trigLen; i++)
+            for (int i = 0, trigLen = cMTouchDisableInvert.Items.Count; i < trigLen; i++)
             {
                 if (((ToolStripMenuItem)cMTouchDisableInvert.Items[i]).Checked)
                     ints.Add(i);
@@ -1674,6 +1670,7 @@ namespace DS4Windows
 
         public void UpdateLists()
         {
+            lBControls.BeginUpdate();
             lBControls.Items[0] = "Cross : " + UpdateButtonList(bnCross);
             lBControls.Items[1] = "Circle : " + UpdateButtonList(bnCircle);
             lBControls.Items[2] = "Square : " + UpdateButtonList(bnSquare);
@@ -1719,6 +1716,8 @@ namespace DS4Windows
                 lbSwipeLeft.Text = UpdateButtonList(bnSwipeLeft);
                 lbSwipeRight.Text = UpdateButtonList(bnSwipeRight);
             }
+
+            lBControls.EndUpdate();
 
             lbGyroXN.Text = UpdateButtonList(bnGyroXN);
             lbGyroZN.Text = UpdateButtonList(bnGyroZN);
@@ -2209,10 +2208,12 @@ namespace DS4Windows
             }
             else if (rBTPMouse.Checked && lBControls.Items.Count > 33)
             {
+                lBControls.BeginUpdate();
                 lBControls.Items.RemoveAt(36);
                 lBControls.Items.RemoveAt(35);
                 lBControls.Items.RemoveAt(34);
                 lBControls.Items.RemoveAt(33);
+                lBControls.EndUpdate();
             }
         }
 
@@ -2889,7 +2890,7 @@ namespace DS4Windows
 
                 List<int> ints = new List<int>();
                 List<string> s = new List<string>();
-                for (int i = 0; i < touchDisableInvCount - 1; i++)
+                for (int i = 0; i < touchDisableInvCount; i++)
                 {
                     ToolStripMenuItem current = (ToolStripMenuItem)cMTouchDisableInvert.Items[i];
                     if (current.Checked)

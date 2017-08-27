@@ -115,7 +115,7 @@ namespace DS4Windows
         private const int BT_OUTPUT_REPORT_LENGTH = 78;
         private const int BT_INPUT_REPORT_LENGTH = 547;
         // Use large value for worst case scenario
-        private const int READ_STREAM_TIMEOUT = 1000;
+        private const int READ_STREAM_TIMEOUT = 3000;
         // Isolated BT report can have latency as high as 15 ms
         // due to hardware.
         private const int WARN_INTERVAL_BT = 20;
@@ -559,6 +559,8 @@ namespace DS4Windows
                     ds4Output.Start();
 
                     timeoutCheckThread = new Thread(timeoutTestThread);
+                    timeoutCheckThread.Priority = ThreadPriority.BelowNormal;
+                    timeoutCheckThread.Name = "DS4 Timeout thread: " + Mac;
                     timeoutCheckThread.IsBackground = true;
                     timeoutCheckThread.Start();
                 }
@@ -724,7 +726,7 @@ namespace DS4Windows
         {
             firstActive = DateTime.UtcNow;
             NativeMethods.HidD_SetNumInputBuffers(hDevice.safeReadHandle.DangerousGetHandle(), 2);
-            Queue<long> latencyQueue = new Queue<long>(51); // Set capacity at max + 1 to avoid any resizing
+            Queue<long> latencyQueue = new Queue<long>(31); // Set capacity at max + 1 to avoid any resizing
             int tempLatencyCount = 0;
             long oldtime = 0;
             string currerror = string.Empty;
@@ -743,7 +745,7 @@ namespace DS4Windows
                 oldCharging = charging;
                 currerror = string.Empty;
 
-                if (tempLatencyCount >= 50)
+                if (tempLatencyCount >= 30)
                 {
                     latencyQueue.Dequeue();
                     tempLatencyCount--;

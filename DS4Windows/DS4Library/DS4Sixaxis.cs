@@ -25,8 +25,9 @@ namespace DS4Windows
         public readonly float accelX, accelY, accelZ;       //in Gs/s^2
         public readonly ulong timestampUs;                  //from controller, in microseconds
 
-        public int fakeGyroPitch, fakeGyroYaw, fakeGyroRoll;
-        public int fakeAccelX, fakeAccelY, fakeAccelZ; //what the fuck, he's modifying these in Motion.cs ?!
+        public readonly int fakeGyroPitch, fakeGyroYaw, fakeGyroRoll;
+        public readonly int fakeAccelX, fakeAccelY, fakeAccelZ;
+        public int outputAccelX, outputAccelY, outputAccelZ;
 
         public SixAxis(ulong microseconds, float gX, float gY, float gZ, float aX, float aY, float aZ, SixAxis prevAxis = null)
         {
@@ -43,6 +44,10 @@ namespace DS4Windows
             fakeAccelX = (int)Math.Round(aX * (DS4Cal.ACC_RESOLUTION_PER_G / 64));
             fakeAccelY = (int)Math.Round(aY * (DS4Cal.ACC_RESOLUTION_PER_G / 64));
             fakeAccelZ = (int)Math.Round(-aZ * (DS4Cal.ACC_RESOLUTION_PER_G / 64));
+			
+            outputAccelX = fakeAccelX;
+            outputAccelY = fakeAccelY;
+            outputAccelZ = fakeAccelZ;
 
             // Legacy values
             fakeGyroPitch = (int)Math.Round(gX / (256 / DS4Cal.GYRO_RESOLUTION_IN_DEG_SEC));
