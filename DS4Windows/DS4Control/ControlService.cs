@@ -26,6 +26,7 @@ namespace DS4Windows
         List<DS4Controls> dcs = new List<DS4Controls>();
         bool[] held = new bool[DS4_CONTROLLER_COUNT];
         int[] oldmouse = new int[DS4_CONTROLLER_COUNT] { -1, -1, -1, -1 };
+        Thread tempThread;
         //SoundPlayer sp = new SoundPlayer();
         private UdpServer _udpServer;
 
@@ -110,12 +111,16 @@ namespace DS4Windows
         {
             //sp.Stream = Properties.Resources.EE;
             // Cause thread affinity to not be tied to main GUI thread
-            Thread x360Thread = new Thread(() => { x360Bus = new X360Device(); });
-            x360Thread.IsBackground = true;
-            x360Thread.Priority = ThreadPriority.Normal;
-            x360Thread.Name = "SCP Virtual Bus Thread";
-            x360Thread.Start();
-            while (!x360Thread.ThreadState.HasFlag(ThreadState.Stopped))
+            /*Task x360task = new Task(() => { Thread.CurrentThread.Priority = ThreadPriority.AboveNormal; x360Bus = new X360Device(); });
+            x360task.Start();
+            while (!x360task.IsCompleted)
+                Thread.SpinWait(500);
+            */
+            tempThread = new Thread(() => { x360Bus = new X360Device(); });
+            tempThread.Priority = ThreadPriority.AboveNormal;
+            tempThread.IsBackground = true;
+            tempThread.Start();
+            while (tempThread.IsAlive)
             {
                 Thread.SpinWait(500);
             }
@@ -298,7 +303,6 @@ namespace DS4Windows
             }
 
             runHotPlug = true;
-
             return true;
         }
 
@@ -872,9 +876,7 @@ namespace DS4Windows
                 }
 
                 if (getEnableTouchToggle(ind))
-                {
                     CheckForTouchToggle(ind, cState, pState);
-                }
 
                 cState = Mapping.SetCurveAndDeadzone(ind, cState);
 
@@ -1025,9 +1027,9 @@ namespace DS4Windows
                     oldscrollvalue[deviceID] = getScrollSensitivity(deviceID);
                     getTouchSensitivity()[deviceID] = 0;
                     getScrollSensitivity()[deviceID] = 0;
-                    LogDebug(getTouchSensitivity(deviceID) > 0 ? Properties.Resources.TouchpadMovementOn :
+                    LogDebug(oldtouchvalue[deviceID] > 0 ? Properties.Resources.TouchpadMovementOn :
                         Properties.Resources.TouchpadMovementOff);
-                    Log.LogToTray(getTouchSensitivity(deviceID) > 0 ? Properties.Resources.TouchpadMovementOn :
+                    Log.LogToTray(oldtouchvalue[deviceID] > 0 ? Properties.Resources.TouchpadMovementOn :
                         Properties.Resources.TouchpadMovementOff);
                     touchreleased[deviceID] = false;
                 }
@@ -1035,9 +1037,9 @@ namespace DS4Windows
                 {
                     getTouchSensitivity()[deviceID] = oldtouchvalue[deviceID];
                     getScrollSensitivity()[deviceID] = oldscrollvalue[deviceID];
-                    LogDebug(getTouchSensitivity(deviceID) > 0 ? Properties.Resources.TouchpadMovementOn :
+                    LogDebug(oldtouchvalue[deviceID] > 0 ? Properties.Resources.TouchpadMovementOn :
                         Properties.Resources.TouchpadMovementOff);
-                    Log.LogToTray(getTouchSensitivity(deviceID) > 0 ? Properties.Resources.TouchpadMovementOn :
+                    Log.LogToTray(oldtouchvalue[deviceID] > 0 ? Properties.Resources.TouchpadMovementOn :
                         Properties.Resources.TouchpadMovementOff);
                     touchreleased[deviceID] = false;
                 }
