@@ -19,10 +19,11 @@ namespace DS4Windows
         // whole system, including other users. But the application can not be brought
         // into view, of course. 
         private static string SingleAppComEventName = "{a52b5b20-d9ee-4f32-8518-307fa14aa0c6}";
-        private static BackgroundWorker singleAppComThread = null;
         private static EventWaitHandle threadComEvent = null;
         private static bool exitComThread = false;
         public static ControlService rootHub;
+        private static Thread testThread;
+        private static Thread controlThread;
 
         /// <summary>
         /// The main entry point for the application.
@@ -95,11 +96,15 @@ namespace DS4Windows
 
             // Create the Event handle
             threadComEvent = new EventWaitHandle(false, EventResetMode.ManualReset, SingleAppComEventName);
-            CreateInterAppComThread();
+            //System.Threading.Tasks.Task.Run(() => CreateTempWorkerThread());
+            //CreateInterAppComThread();
+            CreateTempWorkerThread();
+            //System.Threading.Tasks.Task.Run(() => { Thread.CurrentThread.Priority = ThreadPriority.Lowest; CreateInterAppComThread(); Thread.CurrentThread.Priority = ThreadPriority.Lowest; }).Wait();
 
             //if (mutex.WaitOne(TimeSpan.Zero, true))
             //{
-                rootHub = new ControlService();
+                createControlService();
+                //rootHub = new ControlService();
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new DS4Form(args));
@@ -108,23 +113,32 @@ namespace DS4Windows
 
             exitComThread = true;
             threadComEvent.Set();  // signal the other instance.
-            while (singleAppComThread.IsBusy)
-                Thread.Sleep(50);
+            while (testThread.IsAlive)
+                Thread.SpinWait(500);
             threadComEvent.Close();
         }
 
-        static private void CreateInterAppComThread()
+        private static void createControlService()
         {
-            singleAppComThread = new BackgroundWorker();
-            singleAppComThread.DoWork += new DoWorkEventHandler(singleAppComThread_DoWork);
-            singleAppComThread.RunWorkerAsync();
+            controlThread = new Thread(() => { rootHub = new ControlService(); });
+            controlThread.Priority = ThreadPriority.Normal;
+            controlThread.IsBackground = true;
+            controlThread.Start();
+            while (controlThread.IsAlive)
+                Thread.SpinWait(500);
         }
 
-        static private void singleAppComThread_DoWork(object sender, DoWorkEventArgs e)
+        private static void CreateTempWorkerThread()
         {
-            BackgroundWorker worker = sender as BackgroundWorker;
+            testThread = new Thread(singleAppComThread_DoWork);
+            testThread.Priority = ThreadPriority.Lowest;
+            testThread.IsBackground = true;
+            testThread.Start();
+        }
+
+        private static void singleAppComThread_DoWork()
+        {
             WaitHandle[] waitHandles = new WaitHandle[] { threadComEvent };
-            Thread.CurrentThread.Priority = ThreadPriority.Lowest;
 
             while (!exitComThread)
             {
