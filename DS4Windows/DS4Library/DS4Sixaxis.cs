@@ -230,18 +230,18 @@ namespace DS4Windows
             applyCalibs(ref currentYaw, ref currentPitch, ref currentRoll, ref AccelX, ref AccelY, ref AccelZ);
 
             SixAxisEventArgs args = null;
-            if (AccelX != 0 || AccelY != 0 || AccelZ != 0)
+            if (AccelX != 0 || AccelY != 0 || AccelZ != 0 || currentYaw != 0 || currentPitch != 0 || currentRoll != 0)
             {
+                sPrev.copy(now);
+                now.populate(currentYaw, currentPitch, currentRoll,
+                    AccelX, AccelY, AccelZ, elapsedDelta, sPrev);
+                state.Motion = now;
+				
                 if (SixAccelMoved != null)
                 {
-                    sPrev.copy(now);
-                    now.populate(currentYaw, currentPitch, currentRoll,
-                        AccelX, AccelY, AccelZ, elapsedDelta, sPrev);
-
                     args = new SixAxisEventArgs(state.ReportTimeStamp, now);
-                    state.Motion = now;
                     SixAccelMoved(this, args);
-                }
+                }                
             }
         }
     }
