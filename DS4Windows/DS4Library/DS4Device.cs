@@ -471,10 +471,78 @@ namespace DS4Windows
 
         public void refreshCalibration()
         {
-            byte[] calibration = new byte[41];
-            calibration[0] = conType == ConnectionType.BT ? (byte)0x05 : (byte)0x02;
-            hDevice.readFeatureData(calibration);
-            sixAxis.setCalibrationData(ref calibration, conType == ConnectionType.USB);
+            byte[] calibData = null;
+            if (ConnectionType == ConnectionType.BT || ConnectionType == ConnectionType.SONYWA)
+            {
+                var DS4_FEATURE_REPORT_5_LENGTH = 41; //we want this instead of 0x02 because it has CRC32
+                var NUM_BT_FEATURE_REPORT_5_TRIES = 5;
+
+                byte[] feature5Bytes = new byte[DS4_FEATURE_REPORT_5_LENGTH];
+
+                var BT_FEATURE_REPORT_5_CRC32_POS = DS4_FEATURE_REPORT_5_LENGTH - 4; //last 4 bytes are crc32
+                byte[] crcBuf = new byte[1 + BT_FEATURE_REPORT_5_CRC32_POS]; //0xA3 + the whole input report before the crc32
+
+                int numTries;
+                for (numTries = 0; numTries < NUM_BT_FEATURE_REPORT_5_TRIES; numTries++)
+                {
+                    feature5Bytes[0] = 0x05;
+                    if (hDevice.readFeatureData(feature5Bytes) == false)
+                        break;
+
+                    UInt32 recvCrc32 = BitConverter.ToUInt32(feature5Bytes, BT_FEATURE_REPORT_5_CRC32_POS);
+                    crcBuf[0] = 0xA3;
+                    Array.Copy(feature5Bytes, 0, crcBuf, 1, BT_FEATURE_REPORT_5_CRC32_POS);
+
+                    UInt32 calcCrc32 = Crc32.Compute(crcBuf);
+                    if (recvCrc32 != calcCrc32)
+                    {
+                        Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "" +
+                                            "> invalid CRC32 getting calibration data (retries: " + numTries.ToString() +
+                                            "): 0x" + recvCrc32.ToString("X8") + " expected: 0x" + calcCrc32.ToString("X8"));
+                        continue;
+                    }
+                    else
+                    {
+                        crcBuf = null;
+                        calibData = feature5Bytes;
+                        break;
+                    }
+                }
+                crcBuf = null;
+
+                if (calibData != null)
+                {
+                    Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "" +
+                                    "> Got calibration data over BT (tries: " + numTries.ToString() +
+                                    "): " + BitConverter.ToString(calibData).Replace('-', ' '));
+                }
+                else
+                {
+                    Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "" +
+                                    "> Cannot get calibration data over BT (tried " + numTries.ToString() + " times)");
+                }
+            }
+            else if (ConnectionType == ConnectionType.USB)
+            {
+                var DS4_FEATURE_REPORT_2_LENGTH = 37;
+                calibData = new byte[DS4_FEATURE_REPORT_2_LENGTH];
+                calibData[0] = 0x02;
+
+                if (hDevice.readFeatureData(calibData) == false)
+                {
+                    Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "" +
+                                    "> Error getting calibration data over USB");
+                    calibData = null;
+                }
+                else
+                {
+                    Console.WriteLine(MacAddress.ToString() + " " + System.DateTime.UtcNow.ToString("o") + "" +
+                                    "> Got calibration data over USB:" + BitConverter.ToString(calibData).Replace('-', ' '));
+                }
+            }
+
+            if (calibData != null)
+                sixAxis.setCalibrationData(ref calibData, conType == ConnectionType.USB);
         }
 
         public void StartUpdate()
