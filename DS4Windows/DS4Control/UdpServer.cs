@@ -194,9 +194,6 @@ namespace DS4Windows
 				uint packetSize = BitConverter.ToUInt16(localMsg, currIdx);
 				currIdx += 2;
 
-				if (packetSize < 0)
-					return;
-
 				packetSize += 16; //size of header
 				if (packetSize > localMsg.Length)
 					return;
